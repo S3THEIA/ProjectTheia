@@ -89,41 +89,63 @@ int showgrid(int grid[][LENGTH*LENGTH])
 	return 0;
 }
 
-int getsudoku(str filename, int sudoku[][])
+int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
 {
     FILE* fichier = fopen(filename,"r");
     if (fichier != NULL)
     {
         char chaine[LENGTH*LENGTH+LENGTH] = "";
         size_t row = 0;
+        int offset_row = 0;
+        int offset_col = 0;
         while (fgets(chaine, LENGTH*LENGTH+LENGTH, fichier) != NULL)
         {
-            int
-            for (size_t col  = 0; col < LENGTH*LENGTH+LENGTH; col++)
+            offset_col = 0;
+            if(chaine != "\n")
             {
-                switch (chaine[row][col])
-                    case '.':
-                        sudoku[col][col]
-                    case ' ':
-                        sudoku
-                    case 'A':
-                        sudoku
-                    case 'B':
-                        sudoku
-                    case 'C':
-                    case 'D':
-                    case 'E':
-                    case 'F':
+                for (size_t col  = 0; col < LENGTH*LENGTH+LENGTH-1; col++)
+                {
+                    printf("row == %lu col == %lu '%s' \n",row,col,chaine);
+                    if(isdigit(chaine[col]))
+                    {
+                        printf("isdigit is True\n");
+                        sudoku[row - offset_row][col - offset_col] = chaine[col] - 48;
+                    }
+                    else
+                    {
+                        switch (chaine[col])
+                        {
+                            case '.':
+                                sudoku[row - offset_row][col - offset_col] = 0;
+                                break;
+                            case ' ':
+                                offset_col += 1;
+                                printf("parse ' ' offset_col == %i\n",offset_col);
+                                break;
+                            default:
+                                printf("isdigit == %i\n",isdigit(chaine[col]));
+                                printf("chaine[col] == %c\n",chaine[col]);
+                                sudoku[row - offset_row][col - offset_col] = chaine[col] - 55;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                offset_row += 1;
+                printf("offset_row == %i",offset_row);
             }
             //traitement de la line de sudoku
-
+            row++;
+            printf("\n");
+            printf("\n");
         }
         fgets(chaine, LENGTH*LENGTH+LENGTH, fichier);
         fclose(fichier);
     }
-    else
+    
     {
-         printf("%s is not readable");
+         printf("%s is not readable",filename);
          return 1;
     }
     return 0;
@@ -131,10 +153,16 @@ int getsudoku(str filename, int sudoku[][])
 
 int main(int argc, char **argv)
 {
-    if ( argc != 1)
+    if ( argc != 2)
     {
+        printf("argc == %i",argc);
         return 1;
     }
+    int sudoku[LENGTH*LENGTH][LENGTH*LENGTH] = {{0}};
+    showgrid(sudoku);
+    getsudoku(argv[1],sudoku);
+    showgrid(sudoku);
+    //solver(sudoku);
 	/*need to conver the char* into int** */
 	return 0;
 }
