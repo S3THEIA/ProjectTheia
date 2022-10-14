@@ -17,5 +17,6 @@ grayscale: grayscale.o
 clean:
 	${RM} ${OBJ}
 	${RM} ${EXE}
+	${RM} gray-picture.jpeg
 
 # END
