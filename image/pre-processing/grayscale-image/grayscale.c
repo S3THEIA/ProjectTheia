@@ -2,51 +2,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-// Updates the display.
-//
-// renderer: Renderer to draw on.
-// texture: Texture that contains the image.
-void draw(SDL_Renderer* renderer, SDL_Texture* texture)
-{
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
-}
-
-// Event loop that calls the relevant event handler.
-//
-// renderer: Renderer to draw on.
-// colored: Texture that contains the colored image.
-// grayscale: Texture that contains the grayscale image.
-void event_loop(SDL_Renderer* renderer, SDL_Texture* colored, SDL_Texture* grayscale)
-{
-    SDL_Event event;
-    SDL_Texture* t = colored;
-
-    while (1)
-    {
-        SDL_WaitEvent(&event);
-
-        switch (event.type)
-        {
-            // If the "quit" button is pushed, ends the event loop.
-            case SDL_QUIT:
-                return;
-
-            // If the window is resized, updates and redraws.
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-                    draw(renderer, t);
-                break;
-
-            // If a key is pressed.
-            case SDL_KEYDOWN:
-                if (t == colored) t = grayscale;
-                else t = colored;
-                draw(renderer, t);
-        }
-    }
-}
-
 // Loads an image in a surface.
 // The format of the surface is SDL_PIXELFORMAT_RGB888.
 //
@@ -115,52 +70,21 @@ int main(int argc, char** argv)
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
         errx(EXIT_FAILURE, "%s", SDL_GetError());
 
-    // Creates a window.
-    SDL_Window* window = SDL_CreateWindow("Static Fractal Canopy", 0, 0, 640, 400,
-            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-    if (window == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Creates a renderer.
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // - Create a surface from the colored image.
+    // Create a surface from the colored image.
     SDL_Surface* surface = load_image(argv[1]);
 
-    // - Resize the window according to the size of the image.
-    int w = surface->w;
-    int h = surface->h;
-    SDL_SetWindowSize(window, w, h);
-
-
-    // - Create a texture from the colored surface.
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (texture == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // - Convert the surface into grayscale.
+    // Convert the surface into grayscale.
     surface_to_grayscale(surface);
 
-    // - Create a new texture from the grayscale surface.
-    SDL_Texture* grayTexture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (grayTexture == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
+    // Save grayscale picture
+    int save = IMG_SaveJPG(surface, "gray-picture.jpeg", 100);
+    if (save != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
 
-    // - Free the surface.
+    // Free the surface.
     SDL_FreeSurface(surface);
 
-    // Dispatch the events.
-    event_loop(renderer, texture, grayTexture);
-
     // Destroy the objetcs.
-    SDL_DestroyTexture(grayTexture);
-    SDL_DestroyTexture(texture);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
     SDL_Quit();
-
 
     return EXIT_SUCCESS;
 }
