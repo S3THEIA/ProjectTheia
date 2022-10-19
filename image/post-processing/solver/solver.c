@@ -53,14 +53,15 @@ int solver(int grid[][LENGTH*LENGTH])
 				int res[LENGTH*LENGTH] = {0};
 				check(grid, res, row, col);
 				size_t i = 0;
-				printf("row == %lu col ==  %lu\n",row,col);
+				//printf("row == %lu col ==  %lu\n",row,col);
 				if (i == LENGTH*LENGTH){return 1;}
 				for(size_t i = 0; i < LENGTH*LENGTH; i++)
 				{
-					printf("res[%lu] == %i \n",i,res[i]);
+					//printf("res[%lu] == %i \n",i,res[i]);
 					if(res[i] == 0)
 					{
 						grid[row][col] = i + 1;
+                        showgrid(grid);
 						if (solver(grid))
 						{
 							return 1;
@@ -101,11 +102,11 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
         while (fgets(chaine, LENGTH*LENGTH+LENGTH, fichier) != NULL)
         {
             offset_col = 0;
-            if(chaine != "\n")
+            if(chaine[0] != '\n')
             {
                 for (size_t col  = 0; col < LENGTH*LENGTH+LENGTH-1; col++)
                 {
-                    printf("row == %lu col == %lu '%s' \n",row,col,chaine);
+                    printf("row == %lu col == %lu '%s' chaine == \n",row,col,chaine);
                     if(isdigit(chaine[col]))
                     {
                         printf("isdigit is True\n");
@@ -133,21 +134,43 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
             else
             {
                 offset_row += 1;
-                printf("offset_row == %i",offset_row);
+                printf("offset_row == %i\n",offset_row);
             }
             //traitement de la line de sudoku
             row++;
             printf("\n");
             printf("\n");
         }
-        fgets(chaine, LENGTH*LENGTH+LENGTH, fichier);
         fclose(fichier);
     }
-    
+    else
     {
          printf("%s is not readable",filename);
          return 1;
     }
+    return 0;
+}
+int setsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
+{
+    FILE* fichier = fopen(filename, "w+");
+    if (!fichier){return 1;}
+    for(size_t row = 0; row < LENGTH*LENGTH; row++)
+    {
+        for(size_t col = 0; col < LENGTH*LENGTH; col++)
+        {
+            fprintf(fichier,sudoku[row][col]);
+            if (col % LENGTH == 2){printf(fichier, " ");}
+        }
+        if (row < LENGTH*LENGTH - 1)
+        {
+            fprintf(fichier, "\n");
+        }
+        if (row % LENGTH == 2)
+        {
+            fprintf(fichier, "\n");
+        }
+    }
+    fclose(fichier);
     return 0;
 }
 
