@@ -35,7 +35,7 @@ int is_solve(int grid[][LENGTH*LENGTH])
 			check(grid, test, row, col);
 			for (size_t i = 0; i < LENGTH*LENGTH; i++)
 			{
-				if(!test[i]){return 0;}
+				if(test[i] == 0){return 0;}
 			}
 		}
 	}
@@ -52,16 +52,14 @@ int solver(int grid[][LENGTH*LENGTH])
 			{
 				int res[LENGTH*LENGTH] = {0};
 				check(grid, res, row, col);
-				size_t i = 0;
-				//printf("row == %lu col ==  %lu\n",row,col);
-				if (i == LENGTH*LENGTH){return 1;}
+                printf("row == %lu col == %lu\n",row,col);
+                showgrid(grid);
 				for(size_t i = 0; i < LENGTH*LENGTH; i++)
 				{
-					//printf("res[%lu] == %i \n",i,res[i]);
+					printf("    res[%lu] == %i \n",i,res[i]);
 					if(res[i] == 0)
 					{
 						grid[row][col] = i + 1;
-                        showgrid(grid);
 						if (solver(grid))
 						{
 							return 1;
@@ -69,10 +67,10 @@ int solver(int grid[][LENGTH*LENGTH])
 						grid[row][col] = 0;
 					}
 				}
-			}
+                if (grid[row][col] == 0){return 0;}
+			}//tester si on a trouver une valeur a mettre
 		}
 	}
-	printf("echec result : \n");
 	return is_solve(grid);
 }
 
@@ -86,12 +84,15 @@ int showgrid(int grid[][LENGTH*LENGTH])
 			if (col % 3 == 2){printf(" ");}
 		}
 		printf("\n");
+        if(row% 3 == 2){printf("\n");}
+
 	}
 	return 0;
 }
 
 int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
 {
+
     FILE* fichier = fopen(filename,"r");
     if (fichier != NULL)
     {
@@ -102,11 +103,11 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
         while (fgets(chaine, LENGTH*LENGTH+LENGTH, fichier) != NULL)
         {
             offset_col = 0;
-            if(chaine[0] != '\n')
+            if(chaine[0] != '\n' && chaine[1] != '\n')
             {
                 for (size_t col  = 0; col < LENGTH*LENGTH+LENGTH-1; col++)
                 {
-                    printf("row == %lu col == %lu '%s' chaine == \n",row,col,chaine);
+                    printf("row == %lu col == %lu chaine == '%s'\n",row,col,chaine);
                     if(isdigit(chaine[col]))
                     {
                         printf("isdigit is True\n");
@@ -152,14 +153,27 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
 }
 int setsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
 {
-    FILE* fichier = fopen(filename, "w+");
+    size_t tmplen = sizeof(filename);
+    char* extention = "result";
+    char resultname[tmplen + 6];
+    size_t i = 0;
+    while (i < tmplen - 1)
+    {
+        resultname[i] = filename[i];
+        i++;
+    }
+    for (size_t j = 0; j < 7; j++)
+    {
+        resultname[i + j] = extention[j];
+    }
+    FILE* fichier = fopen(resultname, "w+");
     if (!fichier){return 1;}
     for(size_t row = 0; row < LENGTH*LENGTH; row++)
     {
         for(size_t col = 0; col < LENGTH*LENGTH; col++)
         {
-            fprintf(fichier,sudoku[row][col]);
-            if (col % LENGTH == 2){printf(fichier, " ");}
+            fprintf(fichier,"%i",sudoku[row][col]);
+            if (col % LENGTH == 2){fprintf(fichier, " ");}
         }
         if (row < LENGTH*LENGTH - 1)
         {
@@ -174,6 +188,8 @@ int setsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
     return 0;
 }
 
+
+
 int main(int argc, char **argv)
 {
     if ( argc != 2)
@@ -185,7 +201,9 @@ int main(int argc, char **argv)
     showgrid(sudoku);
     getsudoku(argv[1],sudoku);
     showgrid(sudoku);
-    //solver(sudoku);
+    showgrid(sudoku);
+    solver(sudoku);
+    setsudoku(argv[1], sudoku);
 	/*need to conver the char* into int** */
 	return 0;
 }
