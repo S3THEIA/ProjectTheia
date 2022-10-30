@@ -4,7 +4,8 @@
 #include <err.h>
 
 // Simple network that can learn XOR
-// Feartures : sigmoid activation function, stochastic gradient descent, and mean square error fuction
+// Feartures : sigmoid activation function, stochastic gradient descent, and
+// mean square error fuction
 
 // Activation function and its derivative
 double sigmoid(double x) { return 1 / (1 + exp(-x)); }
@@ -35,7 +36,10 @@ void shuffle(int *array, size_t len)
 #define numTrainingSets 4
 
 // Forward propagation
-void feedForward(int i ,double hiddenLayerBias[], double hiddenLayer[], double training_inputs[][numInputs], double hiddenWeights[][numHiddenNodes], double outputLayerBias[], double outputLayer[], double outputWeights[][numOutputs])
+void feedForward(int i ,double hiddenLayerBias[], double hiddenLayer[], double
+        training_inputs[][numInputs], double hiddenWeights[][numHiddenNodes],
+        double outputLayerBias[], double outputLayer[],
+        double outputWeights[][numOutputs])
 {
     // Compute hidden layer activation
     for (int j=0; j<numHiddenNodes; j++)
@@ -56,7 +60,11 @@ void feedForward(int i ,double hiddenLayerBias[], double hiddenLayer[], double t
 }
 
 // Update weight and threshold
-void update(int i,const double lr,double outputLayerBias[],double deltaOutput[], double outputWeights[][numOutputs],double hiddenLayer[],double hiddenLayerBias[],double deltaHidden[],double hiddenWeights[][numHiddenNodes],double training_inputs[][numInputs])
+void update(int i,const double lr,double outputLayerBias[],double deltaOutput[],
+        double outputWeights[][numOutputs],double hiddenLayer[],
+        double hiddenLayerBias[],double deltaHidden[],
+        double hiddenWeights[][numHiddenNodes],
+        double training_inputs[][numInputs])
 {
     for (int j=0; j<numOutputs; j++)
     {
@@ -74,7 +82,12 @@ void update(int i,const double lr,double outputLayerBias[],double deltaOutput[],
 }
 
 // Backward propagation
-void backPropagation(int i,const double lr,double training_outputs[][numOutputs], double outputLayer[],double outputWeights[][numOutputs], double hiddenLayer[],double outputLayerBias[],double hiddenLayerBias[],double hiddenWeights[][numHiddenNodes],double training_inputs[][numInputs])
+void backPropagation(int i,const double lr,
+        double training_outputs[][numOutputs], double outputLayer[],
+        double outputWeights[][numOutputs], double hiddenLayer[],
+        double outputLayerBias[],double hiddenLayerBias[],
+        double hiddenWeights[][numHiddenNodes],
+        double training_inputs[][numInputs])
 {
     // Compute change in output weights
     double deltaOutput[numOutputs];
@@ -92,7 +105,8 @@ void backPropagation(int i,const double lr,double training_outputs[][numOutputs]
             errorHidden += deltaOutput[k] * outputWeights[j][k];
         deltaHidden[j] = errorHidden * dSigmoid(hiddenLayer[j]);
     }
-    update(i,lr,outputLayerBias,deltaOutput,outputWeights,hiddenLayer,hiddenLayerBias,deltaHidden,hiddenWeights,training_inputs);
+    update(i,lr,outputLayerBias,deltaOutput,outputWeights,hiddenLayer,
+            hiddenLayerBias,deltaHidden,hiddenWeights,training_inputs);
 }
 
 
@@ -156,7 +170,8 @@ int main (int argc, char* argv[]) {
         {
             if( fscanf(fileToRead,"%lf",&(arr[numExtraction])) == 0)
             {
-                errx(1, "Error: fscan() didn't manage to load the correctly the data to extract");
+                errx(1, "Error: fscan() didn't manage to load the correctly the\
+                        data to extract");
             }
         }
         numExtraction = 0;
@@ -182,20 +197,16 @@ int main (int argc, char* argv[]) {
                 numExtraction++;
             }
         }
-        for (int i=0; i<numOutputs; i++) 
+        for (int i=0; i<numOutputs; i++)
         {
             outputLayerBias[i] = arr[numExtraction];
             numExtraction++;
         }
     }
-    
+
     int trainingSetOrder[] = {0,1,2,3};
-    
-    int numberOfEpochs = 10000;
-    if(argc == 3)
-    {
-        numberOfEpochs = strtoul(argv[1], NULL, 10);
-    }
+
+    int numberOfEpochs = strtoul(argv[1], NULL, 10);
     // Train the neural network for a number of epochs
     for(int epochs=0; epochs < numberOfEpochs; epochs++) {
 
@@ -204,19 +215,23 @@ int main (int argc, char* argv[]) {
 
         // Cycle through each of the training set elements
         for (int x=0; x<numTrainingSets; x++) {
-            
+
             int i = trainingSetOrder[x];
-            
+
             // Forward pass
-            feedForward(i,hiddenLayerBias, hiddenLayer, training_inputs, hiddenWeights, outputLayerBias, outputLayer, outputWeights);
+            feedForward(i,hiddenLayerBias, hiddenLayer, training_inputs, 
+                    hiddenWeights, outputLayerBias, outputLayer, outputWeights);
 
             // Print the results from forward pass
-            printf ("Input:%.18g %.18g  Output:%.18g    Expected Output: %.18g\n",
+            printf ("Input:%.18g %.18g  Output:%.18g    Expected Output: %.18g\
+                    \n",
                    training_inputs[i][0], training_inputs[i][1],
                    outputLayer[0], training_outputs[i][0]);
 
             // Backprop
-            backPropagation(i,lr,training_outputs,outputLayer,outputWeights,hiddenLayer,outputLayerBias,hiddenLayerBias,hiddenWeights,training_inputs);
+            backPropagation(i,lr,training_outputs,outputLayer,outputWeights,
+                    hiddenLayer,outputLayerBias,hiddenLayerBias,hiddenWeights,
+                    training_inputs);
 
         }
     }
