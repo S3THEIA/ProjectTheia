@@ -239,11 +239,11 @@ int main (int argc, char* argv[]) {
     // Print  and save final weights after training
     fileToWrite = fopen(txt, "w");
     fputs ("Final Hidden Weights\n[ ", stdout);
-    for (int j=0; j<numHiddenNodes; j++) {
+    for (int j=0; j<numInputs; j++) {
         fputs ("[ ", stdout);
-        for(int k=0; k<numInputs; k++) {
-            printf ("%.18lf ", hiddenWeights[k][j]);
-            fprintf(fileToWrite, "%.18lf\n", hiddenWeights[k][j]);
+        for(int k=0; k<numHiddenNodes; k++) {
+            printf ("%.18lf ", hiddenWeights[j][k]);
+            fprintf(fileToWrite, "%.18lf\n", hiddenWeights[j][k]);
         }
         fputs ("] ", stdout);
     }
