@@ -1,0 +1,11 @@
+# Actuellement l'application n'est pas utilisable dans son intégralité !
+
+Cela est notamment à cause de l'abscence de l'interface graphique qui ne
+facilite pas l'accessibilité côté utilisateur.
+
+### Architecture du projet
+
+Notre projet se divise en plusieurs catégories telle que image, neural-network
+et l'ui. Dans lesquelles en fonction de celle-ci, l'on peut retrouver
+différentes sous catégorie. De plus, des images de tests sont à disposition
+dans le dossier pictures afin de pouvoir facilement tester les fonctions.
