@@ -1,7 +1,7 @@
-# Makefile
+#Makefile
 
 CC = gcc
-CFLAGS = -Wall -Wextra -O3 `pkg-config --cflags sdl2 SDL2_image`
+CFLAGS = -Wall -Wextra -O3 `pkg-config --cflags sdl2 SDL2_image` -D__NO_INLINE__
 LDLIBS = `pkg-config --libs sdl2 SDL2_image`
 
 all: grayscale
@@ -17,6 +17,6 @@ grayscale: grayscale.o
 clean:
 	${RM} ${OBJ}
 	${RM} ${EXE}
-	${RM} gray-picture.jpeg
+	${RM} gray-image.jpeg
 
 # END
