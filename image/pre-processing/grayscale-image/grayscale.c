@@ -13,7 +13,8 @@ SDL_Surface* load_image(const char* path)
     if (tempSurface == NULL) errx(EXIT_FAILURE, "%s", SDL_GetError());
 
     // Create a new surface in the desired format.
-    SDL_Surface* surface = SDL_ConvertSurfaceFormat(tempSurface, SDL_PIXELFORMAT_RGB888, 0);
+    SDL_Surface* surface = SDL_ConvertSurfaceFormat(tempSurface,
+            SDL_PIXELFORMAT_RGB888, 0);
     if (surface == NULL) errx(EXIT_FAILURE, "%s", SDL_GetError());
 
     // Free the temporary surface.
@@ -77,7 +78,7 @@ int main(int argc, char** argv)
     surface_to_grayscale(surface);
 
     // Save grayscale picture
-    int save = IMG_SaveJPG(surface, "gray-picture.jpeg", 100);
+    int save = IMG_SaveJPG(surface, "gray-image.jpeg", 100);
     if (save != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
 
     // Free the surface.
