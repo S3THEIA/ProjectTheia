@@ -243,7 +243,7 @@ int main (int argc, char* argv[]) {
         fputs ("[ ", stdout);
         for(int k=0; k<numInputs; k++) {
             printf ("%.18lf ", hiddenWeights[k][j]);
-            fprintf(fileToWrite, "%.18lf ", hiddenWeights[k][j]);
+            fprintf(fileToWrite, "%.18lf\n", hiddenWeights[k][j]);
         }
         fputs ("] ", stdout);
     }
@@ -251,7 +251,7 @@ int main (int argc, char* argv[]) {
     fputs ("]\nFinal Hidden Biases\n[ ", stdout);
     for (int j=0; j<numHiddenNodes; j++) {
         printf ("%.18lf ", hiddenLayerBias[j]);
-        fprintf(fileToWrite, "%.18lf ", hiddenLayerBias[j]);
+        fprintf(fileToWrite, "%.18lf\n", hiddenLayerBias[j]);
     }
 
     fputs ("]\nFinal Output Weights", stdout);
@@ -259,7 +259,7 @@ int main (int argc, char* argv[]) {
         fputs ("[ ", stdout);
         for (int k=0; k<numHiddenNodes; k++) {
             printf ("%.18lf ", outputWeights[k][j]);
-            fprintf(fileToWrite, "%.18lf ", outputWeights[k][j]);
+            fprintf(fileToWrite, "%.18lf\n", outputWeights[k][j]);
         }
         fputs ("]\n", stdout);
     }
