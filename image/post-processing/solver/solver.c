@@ -52,11 +52,8 @@ int solver(int grid[][LENGTH*LENGTH])
 			{
 				int res[LENGTH*LENGTH] = {0};
 				check(grid, res, row, col);
-                printf("row == %lu col == %lu\n",row,col);
-                showgrid(grid);
 				for(size_t i = 0; i < LENGTH*LENGTH; i++)
 				{
-					printf("    res[%lu] == %i \n",i,res[i]);
 					if(res[i] == 0)
 					{
 						grid[row][col] = i + 1;
@@ -68,7 +65,7 @@ int solver(int grid[][LENGTH*LENGTH])
 					}
 				}
                 if (grid[row][col] == 0){return 0;}
-			}//tester si on a trouver une valeur a mettre
+			}
 		}
 	}
 	return is_solve(grid);
@@ -81,10 +78,10 @@ int showgrid(int grid[][LENGTH*LENGTH])
 		for(size_t col = 0; col < LENGTH*LENGTH; col++)
 		{
 			printf("%i",grid[row][col]);
-			if (col % 3 == 2){printf(" ");}
+			if (col % LENGTH == LENGTH - 1){printf(" ");}
 		}
 		printf("\n");
-        if(row% 3 == 2){printf("\n");}
+        if(row% LENGTH  == LENGTH - 1){printf("\n");}
 
 	}
 	return 0;
@@ -107,10 +104,8 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
             {
                 for (size_t col  = 0; col < LENGTH*LENGTH+LENGTH-1; col++)
                 {
-                    printf("row == %lu col == %lu chaine == '%s'\n",row,col,chaine);
                     if(isdigit(chaine[col]))
                     {
-                        printf("isdigit is True\n");
                         sudoku[row - offset_row][col - offset_col] = chaine[col] - 48;
                     }
                     else
@@ -122,11 +117,8 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
                                 break;
                             case ' ':
                                 offset_col += 1;
-                                printf("parse ' ' offset_col == %i\n",offset_col);
                                 break;
                             default:
-                                printf("isdigit == %i\n",isdigit(chaine[col]));
-                                printf("chaine[col] == %c\n",chaine[col]);
                                 sudoku[row - offset_row][col - offset_col] = chaine[col] - 55;
                         }
                     }
@@ -135,12 +127,9 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
             else
             {
                 offset_row += 1;
-                printf("offset_row == %i\n",offset_row);
             }
             //traitement de la line de sudoku
             row++;
-            printf("\n");
-            printf("\n");
         }
         fclose(fichier);
     }
@@ -151,18 +140,20 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
     }
     return 0;
 }
+
+// write the final sudoku in filename.result
 int setsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
 {
-    size_t tmplen = sizeof(filename);
-    char* extention = "result";
-    char resultname[tmplen + 6];
+    size_t tmplen = strlen(filename);
+    char* extention = ".result";
+    char resultname[tmplen + 7];
     size_t i = 0;
-    while (i < tmplen - 1)
+    while (i < tmplen)
     {
         resultname[i] = filename[i];
         i++;
     }
-    for (size_t j = 0; j < 7; j++)
+    for (size_t j = 0; j < 8; j++)
     {
         resultname[i + j] = extention[j];
     }
@@ -172,14 +163,21 @@ int setsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
     {
         for(size_t col = 0; col < LENGTH*LENGTH; col++)
         {
-            fprintf(fichier,"%i",sudoku[row][col]);
-            if (col % LENGTH == 2){fprintf(fichier, " ");}
+            if(sudoku[row][col] < 10)
+            {
+                fprintf(fichier,"%i",sudoku[row][col]);
+            }
+            else
+            {
+                fprintf(fichier,"%c",sudoku[row][col]+7+'0');
+            }
+            if (col % LENGTH == LENGTH - 1){fprintf(fichier, " ");}
         }
         if (row < LENGTH*LENGTH - 1)
         {
             fprintf(fichier, "\n");
         }
-        if (row % LENGTH == 2)
+        if (row % LENGTH == LENGTH - 1)
         {
             fprintf(fichier, "\n");
         }
@@ -192,16 +190,14 @@ int setsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
 
 int main(int argc, char **argv)
 {
+    //le nom des fichier ne doit pas avoir d'extension
     if ( argc != 2)
     {
         printf("argc == %i",argc);
         return 1;
     }
     int sudoku[LENGTH*LENGTH][LENGTH*LENGTH] = {{0}};
-    showgrid(sudoku);
     getsudoku(argv[1],sudoku);
-    showgrid(sudoku);
-    showgrid(sudoku);
     solver(sudoku);
     setsudoku(argv[1], sudoku);
 	/*need to conver the char* into int** */
