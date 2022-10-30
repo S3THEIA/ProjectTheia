@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <err.h>
 
 // Simple network that can learn XOR
 // Feartures : sigmoid activation function, stochastic gradient descent, and mean square error fuction
@@ -28,14 +29,13 @@ void shuffle(int *array, size_t len)
     }
 }
 
-
 #define numInputs 2
 #define numHiddenNodes 2
 #define numOutputs 1
 #define numTrainingSets 4
 
 // Forward propagation
-void feedForward(int i,double hiddenLayerBias[], double hiddenLayer[], double training_inputs[][numInputs], double hiddenWeights[][numHiddenNodes], double outputLayerBias[], double outputLayer[], double outputWeights[][numOutputs])
+void feedForward(int i ,double hiddenLayerBias[], double hiddenLayer[], double training_inputs[][numInputs], double hiddenWeights[][numHiddenNodes], double outputLayerBias[], double outputLayer[], double outputWeights[][numOutputs])
 {
     // Compute hidden layer activation
     for (int j=0; j<numHiddenNodes; j++)
@@ -95,8 +95,15 @@ void backPropagation(int i,const double lr,double training_outputs[][numOutputs]
     update(i,lr,outputLayerBias,deltaOutput,outputWeights,hiddenLayer,hiddenLayerBias,deltaHidden,hiddenWeights,training_inputs);
 }
 
-int main (void) {
 
+int main (int argc, char* argv[]) {
+    
+    // Test if the for the arguments and for the opening of the the save file
+    if(argc > 3)   
+        errx(1, "Error: Too many arguments");
+
+    FILE *fileToWrite;
+    FILE *fileToRead;
     const double lr = 0.1f;
     
     double hiddenLayer[numHiddenNodes];
@@ -118,24 +125,76 @@ int main (void) {
                                                             {1.0f},
                                                             {0.0f}};
     
-    for (int i=0; i<numInputs; i++) {
-        for (int j=0; j<numHiddenNodes; j++) {
-            hiddenWeights[i][j] = init_weight();
+    if((fileToRead = fopen(argv[2], "r")) == NULL)
+    {
+
+        for (int i =0; i<numInputs; i++) 
+        {
+            for (int j=0; j<numHiddenNodes; j++) {
+                hiddenWeights[i][j] = init_weight();
+            }
         }
-    }
-    for (int i=0; i<numHiddenNodes; i++) {
-        hiddenLayerBias[i] = init_weight();
-        for (int j=0; j<numOutputs; j++) {
-            outputWeights[i][j] = init_weight();
+        for (int i=0; i<numHiddenNodes; i++) {
+            hiddenLayerBias[i] = init_weight();
+            for (int j=0; j<numOutputs; j++) {
+                outputWeights[i][j] = init_weight();
+            }
         }
+        for (int i=0; i<numOutputs; i++) 
+        {
+            outputLayerBias[i] = init_weight();
+        }   
     }
-    for (int i=0; i<numOutputs; i++) {
-        outputLayerBias[i] = init_weight();
+    else
+    {
+        // Exctract Data from save File
+        double arr[9] = {0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+
+        int numExtraction;
+        for(numExtraction = 0; numExtraction < 9; numExtraction++)
+        {
+            if( fscanf(fileToRead,"%lf",&(arr[numExtraction])) == 0)
+            {
+                errx(1, "Error: fscan() didn't manage to load the correctly the data to extract");
+            }
+        }
+        numExtraction = 0;
+        // Initialise Bias and Weights
+        for (int i=0; i<numInputs; i++) 
+        {
+            for (int j=0; j<numHiddenNodes; j++) 
+            {
+                hiddenWeights[i][j] = arr[numExtraction];
+                numExtraction++;
+            }
+        }
+        for(int i =0; i<numHiddenNodes; i++)
+        {
+            hiddenLayerBias[i] = arr[numExtraction];
+            numExtraction++;
+        }
+        for (int i=0; i<numHiddenNodes; i++) 
+        {
+            for (int j=0; j<numOutputs; j++) 
+            {
+                outputWeights[i][j] = arr[numExtraction];
+                numExtraction++;
+            }
+        }
+        for (int i=0; i<numOutputs; i++) 
+        {
+            outputLayerBias[i] = arr[numExtraction];
+            numExtraction++;
+        }
     }
     
     int trainingSetOrder[] = {0,1,2,3};
     
-    int numberOfEpochs = 100000;
+    int numberOfEpochs = 10000;
+    if(argc == 3)
+    {
+        numberOfEpochs = strtoul(argv[1], NULL, 10);
+    }
     // Train the neural network for a number of epochs
     for(int epochs=0; epochs < numberOfEpochs; epochs++) {
 
@@ -151,9 +210,9 @@ int main (void) {
             feedForward(i,hiddenLayerBias, hiddenLayer, training_inputs, hiddenWeights, outputLayerBias, outputLayer, outputWeights);
             
             // Print the results from forward pass
-            printf ("Input:%g %g  Output:%g    Expected Output: %g\n",
-                    training_inputs[i][0], training_inputs[i][1],
-                    outputLayer[0], training_outputs[i][0]);
+            printf ("Input:%.18g %.18g  Output:%.18g    Expected Output: %.18g\n",
+                   training_inputs[i][0], training_inputs[i][1],
+                   outputLayer[0], training_outputs[i][0]);
 
             // Backprop
             backPropagation(i,lr,training_outputs,outputLayer,outputWeights,hiddenLayer,outputLayerBias,hiddenLayerBias,hiddenWeights,training_inputs);
@@ -161,37 +220,46 @@ int main (void) {
         }
     }
     
-    // Print final weights after training
+    // Print  and save final weights after training
+    fileToWrite = fopen(argv[2], "w");
     fputs ("Final Hidden Weights\n[ ", stdout);
     for (int j=0; j<numHiddenNodes; j++) {
         fputs ("[ ", stdout);
         for(int k=0; k<numInputs; k++) {
-            printf ("%f ", hiddenWeights[k][j]);
+            printf ("%.18lf ", hiddenWeights[k][j]);
+            fprintf(fileToWrite, "%.18lf ", hiddenWeights[k][j]);
         }
         fputs ("] ", stdout);
     }
     
     fputs ("]\nFinal Hidden Biases\n[ ", stdout);
     for (int j=0; j<numHiddenNodes; j++) {
-        printf ("%f ", hiddenLayerBias[j]);
+        printf ("%.18lf ", hiddenLayerBias[j]);
+        fprintf(fileToWrite, "%.18lf ", hiddenLayerBias[j]);
     }
 
     fputs ("]\nFinal Output Weights", stdout);
     for (int j=0; j<numOutputs; j++) {
         fputs ("[ ", stdout);
         for (int k=0; k<numHiddenNodes; k++) {
-            printf ("%f ", outputWeights[k][j]);
+            printf ("%.18lf ", outputWeights[k][j]);
+            fprintf(fileToWrite, "%.18lf ", outputWeights[k][j]);
         }
         fputs ("]\n", stdout);
     }
 
     fputs ("Final Output Biases\n[ ", stdout);
     for (int j=0; j<numOutputs; j++) {
-        printf ("%f ", outputLayerBias[j]);
-        
+        printf ("%.18lf ", outputLayerBias[j]);
+        fprintf(fileToWrite, "%.18lf\n", outputLayerBias[j]);
     }
     
     fputs ("]\n", stdout);
+    fclose(fileToWrite);
+    if (fileToRead != NULL)
+    {
+        fclose(fileToRead);
+    }
 
     return 0;
 }
