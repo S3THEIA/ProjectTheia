@@ -2,7 +2,7 @@
 
 void check(int grid[][LENGTH*LENGTH],int res[], size_t line, size_t column)
 {
-	//check possible element to put in a case
+	// check possible element to put in a case
 	size_t start_r = (line/LENGTH)*LENGTH;
 	size_t start_c = (column/LENGTH)*LENGTH;
 	for (size_t row = start_r; row < start_r + LENGTH;row++)
@@ -21,7 +21,7 @@ void check(int grid[][LENGTH*LENGTH],int res[], size_t line, size_t column)
 	for(size_t i = 0; i < LENGTH*LENGTH; i++)
 	{
 		if(grid[i][column] != 0){res[grid[i][column] - 1] = 1;}
-		if(grid[line][i] != 0){res[grid[line][i] - 1] = 1;} 
+		if(grid[line][i] != 0){res[grid[line][i] - 1] = 1;}
 	}
 }
 
@@ -128,7 +128,7 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
             {
                 offset_row += 1;
             }
-            //traitement de la line de sudoku
+            // processing of the sudoku line
             row++;
         }
         fclose(fichier);
@@ -186,20 +186,13 @@ int setsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
     return 0;
 }
 
-
-
 int main(int argc, char **argv)
 {
-    //le nom des fichier ne doit pas avoir d'extension
     if ( argc != 2)
-    {
-        printf("argc == %i",argc);
-        return 1;
-    }
+        errx(EXIT_FAILURE, "Usage: image-file");
     int sudoku[LENGTH*LENGTH][LENGTH*LENGTH] = {{0}};
     getsudoku(argv[1],sudoku);
     solver(sudoku);
     setsudoku(argv[1], sudoku);
-	/*need to conver the char* into int** */
 	return 0;
 }

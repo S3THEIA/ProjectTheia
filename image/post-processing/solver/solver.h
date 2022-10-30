@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <err.h>
 #endif
 #define LENGTH 3
 

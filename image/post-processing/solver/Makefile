@@ -20,5 +20,6 @@ clean:
 	${RM} ${OBJ}
 	${RM} ${DEP}
 	${RM} solver
+	${RM} *.result
 
 # END
