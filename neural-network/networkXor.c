@@ -97,24 +97,24 @@ void backPropagation(int i,const double lr,double training_outputs[][numOutputs]
 
 
 int main (int argc, char* argv[]) {
-    
+
     // Test if the for the arguments and for the opening of the the save file
-    if(argc > 3)   
-        errx(1, "Error: Too many arguments");
+    if(argc > 3 || argc < 2)
+        errx(EXIT_FAILURE, "Usage: nbTests [save-file]");
 
     FILE *fileToWrite;
     FILE *fileToRead;
     const double lr = 0.1f;
-    
+
     double hiddenLayer[numHiddenNodes];
     double outputLayer[numOutputs];
-    
+
     double hiddenLayerBias[numHiddenNodes];
     double outputLayerBias[numOutputs];
 
     double hiddenWeights[numInputs][numHiddenNodes];
     double outputWeights[numHiddenNodes][numOutputs];
-    
+
 
     double training_inputs[numTrainingSets][numInputs] = {{0.0f,0.0f},
                                                           {1.0f,0.0f},
@@ -124,11 +124,12 @@ int main (int argc, char* argv[]) {
                                                             {1.0f},
                                                             {1.0f},
                                                             {0.0f}};
-    
-    if((fileToRead = fopen(argv[2], "r")) == NULL)
+    char* txt = "networkXorSave.txt";
+    if (argc == 3) txt = argv[2];
+    if((fileToRead = fopen(txt, "r")) == NULL)
     {
 
-        for (int i =0; i<numInputs; i++) 
+        for (int i =0; i<numInputs; i++)
         {
             for (int j=0; j<numHiddenNodes; j++) {
                 hiddenWeights[i][j] = init_weight();
@@ -140,10 +141,10 @@ int main (int argc, char* argv[]) {
                 outputWeights[i][j] = init_weight();
             }
         }
-        for (int i=0; i<numOutputs; i++) 
+        for (int i=0; i<numOutputs; i++)
         {
             outputLayerBias[i] = init_weight();
-        }   
+        }
     }
     else
     {
@@ -160,9 +161,9 @@ int main (int argc, char* argv[]) {
         }
         numExtraction = 0;
         // Initialise Bias and Weights
-        for (int i=0; i<numInputs; i++) 
+        for (int i=0; i<numInputs; i++)
         {
-            for (int j=0; j<numHiddenNodes; j++) 
+            for (int j=0; j<numHiddenNodes; j++)
             {
                 hiddenWeights[i][j] = arr[numExtraction];
                 numExtraction++;
@@ -173,9 +174,9 @@ int main (int argc, char* argv[]) {
             hiddenLayerBias[i] = arr[numExtraction];
             numExtraction++;
         }
-        for (int i=0; i<numHiddenNodes; i++) 
+        for (int i=0; i<numHiddenNodes; i++)
         {
-            for (int j=0; j<numOutputs; j++) 
+            for (int j=0; j<numOutputs; j++)
             {
                 outputWeights[i][j] = arr[numExtraction];
                 numExtraction++;
@@ -208,7 +209,7 @@ int main (int argc, char* argv[]) {
             
             // Forward pass
             feedForward(i,hiddenLayerBias, hiddenLayer, training_inputs, hiddenWeights, outputLayerBias, outputLayer, outputWeights);
-            
+
             // Print the results from forward pass
             printf ("Input:%.18g %.18g  Output:%.18g    Expected Output: %.18g\n",
                    training_inputs[i][0], training_inputs[i][1],
@@ -219,9 +220,9 @@ int main (int argc, char* argv[]) {
 
         }
     }
-    
+
     // Print  and save final weights after training
-    fileToWrite = fopen(argv[2], "w");
+    fileToWrite = fopen(txt, "w");
     fputs ("Final Hidden Weights\n[ ", stdout);
     for (int j=0; j<numHiddenNodes; j++) {
         fputs ("[ ", stdout);
@@ -231,7 +232,7 @@ int main (int argc, char* argv[]) {
         }
         fputs ("] ", stdout);
     }
-    
+
     fputs ("]\nFinal Hidden Biases\n[ ", stdout);
     for (int j=0; j<numHiddenNodes; j++) {
         printf ("%.18lf ", hiddenLayerBias[j]);
@@ -253,7 +254,7 @@ int main (int argc, char* argv[]) {
         printf ("%.18lf ", outputLayerBias[j]);
         fprintf(fileToWrite, "%.18lf\n", outputLayerBias[j]);
     }
-    
+
     fputs ("]\n", stdout);
     fclose(fileToWrite);
     if (fileToRead != NULL)
