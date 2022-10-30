@@ -106,7 +106,8 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
                 {
                     if(isdigit(chaine[col]))
                     {
-                        sudoku[row - offset_row][col - offset_col] = chaine[col] - 48;
+                        sudoku[row - offset_row][col - offset_col] = chaine[col]
+                            - 48;
                     }
                     else
                     {
@@ -119,7 +120,8 @@ int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
                                 offset_col += 1;
                                 break;
                             default:
-                                sudoku[row - offset_row][col - offset_col] = chaine[col] - 55;
+                                sudoku[row - offset_row][col - offset_col] =
+                                    chaine[col] - 55;
                         }
                     }
                 }
