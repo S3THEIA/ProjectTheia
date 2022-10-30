@@ -71,21 +71,21 @@ int solver(int grid[][LENGTH*LENGTH])
 	return is_solve(grid);
 }
 
-int showgrid(int grid[][LENGTH*LENGTH])
-{
-	for(size_t row = 0; row < LENGTH*LENGTH; row++)
-	{
-		for(size_t col = 0; col < LENGTH*LENGTH; col++)
-		{
-			printf("%i",grid[row][col]);
-			if (col % LENGTH == LENGTH - 1){printf(" ");}
-		}
-		printf("\n");
-        if(row% LENGTH  == LENGTH - 1){printf("\n");}
+//int showgrid(int grid[][LENGTH*LENGTH])
+//{
+//	for(size_t row = 0; row < LENGTH*LENGTH; row++)
+//	{
+//		for(size_t col = 0; col < LENGTH*LENGTH; col++)
+//  	{
+//			printf("%i",grid[row][col]);
+//			if (col % LENGTH == LENGTH - 1){printf(" ");}
+//		}
+//		printf("\n");
+//        if(row% LENGTH  == LENGTH - 1){printf("\n");}
 
-	}
-	return 0;
-}
+//	}
+//	return 0;
+//}
 
 int getsudoku(char* filename, int sudoku[][LENGTH*LENGTH])
 {
