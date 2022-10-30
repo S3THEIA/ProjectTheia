@@ -1,2 +1,0 @@
-http://sdz.tdct.org/sdz/faire-des-rotations-avec-sdl-gfx.html#Faireunerotation
-https://lappweb.in2p3.fr/~paubert/introductioncplusplus/4-0-3-5-0_2185.html
