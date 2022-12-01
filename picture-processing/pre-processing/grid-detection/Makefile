@@ -1,7 +1,7 @@
 # Makefile
 
 CC = gcc
-CFLAGS = -Wall -Wextra -O3 `pkg-config --cflags sdl2 SDL2_image` -D__NO_INLINE__
+CFLAGS = -Wall -Wextra -O3 `pkg-config --cflags sdl2 SDL2_image` -D__NO_INLINE__ -g
 LDLIBS = `pkg-config --libs sdl2 SDL2_image`
 
 all: grid_detection
