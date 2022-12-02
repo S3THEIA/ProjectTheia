@@ -42,81 +42,42 @@ Uint32 pixel_to_grayscale(Uint32 pixel_color, SDL_PixelFormat* format)
     return color;
 }
 
-int found_line(Uint32* pixel_color, SDL_PixelFormat* format, int* result, int width, int height)
-{   //detecte le nombre de case noire sur la ligne d'angle t et sous le point stocke dans result
-    //lw parcour des ligne doit se faire en fonction de cos et sin
-    //notament pour avoir le plus de ligne possible
-    long unsigned threshold = 600;
-    int cur_x = result[0];
-    int cur_y = result[1];
-    long unsigned count = 0;
-    double vx;
-    double vy;
-    if(result[2] > result[3])
-    {
-        vx = 1;
-        if (result[2] > 0)
-        {vy = result[3] / result[2];}
-        else
-        {vy = - result[3] / result[2];}
-    }
-    else
-    {
-        vy = 1;
-        vx = result[2] / result[3];
-    }
-    while (0 <= cur_x && cur_x <  width && cur_y < height)
-    {
-        cur_x += (int) vx;
-        cur_y += (int) vy;
-        Uint8 r, g, b;
-        SDL_GetRGB(pixel_color[cur_x * height + cur_y], format, &r, &g, &b);
-        if (r < 50 && g < 50 && b < 50)
-        {
-            count++;
-        }
-    }
-    if (count >= threshold)
-    {
-        return count;
-    }
-    return 0;
-}
-
-
-//main fonction to detec the grid
-//
-//call recursively other function to forme the matrice of accumulation
-//extract from the matrice of accumulation the grid
-int detec_grid(SDL_Surface* surface)
+int detec_grid(SDL_Surface* surface, int num_rhos,int num_thetas,int threshold)
 {
-    // Get the array of pixels.
-     Uint32* pixels = surface->pixels;
+    size_t edge_height = (size_t) surface->h;
+    size_t edge_weight = (size_t) surface->w;
+    size_t edge_height_half = edge_height / 2;
+    size_t edge_weight_half = edge_weight / 2;
 
-     // Get the length of the array surface->w  surface->h;
-    int result1[4];
-    int result2[4];
-    size_t width = (size_t) surface->w;
-    size_t height = (size_t) surface->h;
+    double d = sqrt((double) (edge_height*edge_height) + (edge_weight * edge_weight));
+    double dtheta = 180 / num_thetas;
+    double drhos = (2 * d) / num_rhos;
 
-    for (size_t row = 1; row < width; row++)
+    double cos_thetas[180];
+    double sin_thetas[180];
+    for (int thetas = 0; thetas < 180; thetas++)
     {
-        for(size_t col = 1; col < height; col++)
+        cos_thetas[thetas] = cos(thetas);
+        sin_thetas[thetas] = sin(thetas);
+    }
+
+    int accumulator[edge_height * edge_weight];
+    for (size_t row = 0; row < edge_weight;row++)
+    {
+        for(size_t col = 0; col < edge_height; col++)
         {
-            //go through each pixel
-            //rajouter une optimisation pour pouvoir ignorer les pixels aui sont dans le precedent result1 et result2
-            
-            int tmp[4] = {row,col,row,0};
-            int count = found_line(pixels,surface->format,tmp,width,height);
-            if(count)
+            if (edge_image[row][col] == 0)
             {
-                printf("row : %lu col : %lu count : %i\n",row,col,count);
-                //on conserve l'ordre result1 > result2 > tmp
+                edge_point = [row - edge_weight_half][col - edge_height_half];
+                ys,yx;
+                for (size_t theta_idx = 0; theta_idx < 180;theta_idx++)
+                {
+                    rho = edge_point[1] * cos_thetas[theta_idx] + edge_point[0] * cos_thetas[theta_idx];
+                rho_idx = 
+                }
             }
-            //parcourir tout les angles
         }
     }
-    return 1;
 }
 
 
@@ -134,7 +95,6 @@ int main(int argc, char *argv[])
     // Create a surface from the colored image.
     SDL_Surface* surface = load_image("../../../pictures/image_01_easy.jpeg");
     
-    detec_grid(surface);
 
     SDL_FreeSurface(surface);
 
