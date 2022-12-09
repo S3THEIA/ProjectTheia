@@ -18,7 +18,7 @@ int main (int argc, char *argv[])
     }
 
     // Gets the widgets.
-    GtkWindow* window = GTK_WINDOW(gtk_builder_get_object(builder, "org.gtk.duel"));
+    GtkWindow* window = GTK_WINDOW(gtk_builder_get_object(builder, "win.ui"));
 
     // Connects signal handlers.
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
