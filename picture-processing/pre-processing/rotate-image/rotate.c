@@ -1,11 +1,4 @@
-#include <err.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <math.h>
-
-#ifndef M_PI
-#define M_PI 3.1415926535897932
-#endif
+#include "rotate.h"
 
 SDL_Surface* load_image(const char* path)
 {

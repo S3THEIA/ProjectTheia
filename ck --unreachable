@@ -1,0 +1,369 @@
+[33mcommit 86f44ea8d1216303055efdcb1adf7c10eaa1d471[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: mathis.villemin <mathis.villemin@epita.fr>
+Date:   Thu Dec 8 12:33:59 2022 +0100
+
+    testing prototype
+
+[33mcommit 88f0503d45f7d995c7fcc4467ff0a7fd28c05966[m
+Author: Guscraftin <augustin.glorian@outlook.com>
+Date:   Mon Oct 31 08:13:46 2022 +0100
+
+    Add rapport1
+    
+    Signed-off-by: Guscraftin <augustin.glorian@outlook.com>
+
+[33mcommit 554e50a97d715cd36635046903b5f98e26b52109[m
+Merge: 1a1be6e 648a07c
+Author: renegaglas <94482674+renegaglas@users.noreply.github.com>
+Date:   Sun Oct 30 19:56:15 2022 +0100
+
+    Merge pull request #12 from S3THEIA/augustin/setup-sout
+    
+    Fix General
+
+[33mcommit 648a07cbd105432da24755c0753539d27a1618e6[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Sun Oct 30 19:12:24 2022 +0100
+
+    Fix General
+    
+    Signed-off-by: augustin.glorian <augustin.glorian@epita.fr>
+
+[33mcommit 1a1be6e272f7e355548b1196c8332f89615b171d[m
+Merge: 5ec9a9e 40ce931
+Author: Guscraftin <97472565+Guscraftin@users.noreply.github.com>
+Date:   Sun Oct 30 17:33:13 2022 +0100
+
+    Merge pull request #7 from S3THEIA/mathis/image_slice
+    
+    Spliting a sudoku grid
+
+[33mcommit 40ce931be5adcfdd03b02f9e2329346c4311bab8[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Sun Oct 30 17:28:32 2022 +0100
+
+    Fix (80 + remove print)
+
+[33mcommit 5ec9a9ec933014ae8ab25444053b4bb8ea9fd484[m
+Merge: 803f015 8e59db0
+Author: renegaglas <94482674+renegaglas@users.noreply.github.com>
+Date:   Sun Oct 30 16:59:51 2022 +0100
+
+    Merge pull request #11 from S3THEIA/mathis/push_solver
+    
+    push this fucking file
+
+[33mcommit 8e59db027ccdca24704eeda6f488bbaac187362d[m
+Author: mathis.villemin <mathis.villemin@epita.fr>
+Date:   Sun Oct 30 16:55:21 2022 +0100
+
+    push this fucking file
+
+[33mcommit 803f015b34c7cc0d1b0c10d3e3c2fe1fdd5ccc1d[m
+Merge: 566ec53 53f5bc1
+Author: Guscraftin <97472565+Guscraftin@users.noreply.github.com>
+Date:   Sun Oct 30 16:39:01 2022 +0100
+
+    Merge pull request #5 from S3THEIA/augustin/rotate-image
+    
+    Rotate-image
+
+[33mcommit 566ec53614f8b7dc5ec54fd4d75b65b8d685b498[m
+Merge: ee64d5d 3f97630
+Author: Guscraftin <97472565+Guscraftin@users.noreply.github.com>
+Date:   Sun Oct 30 16:33:08 2022 +0100
+
+    Merge pull request #9 from S3THEIA/augustin/display-image
+    
+    Fix display
+
+[33mcommit 3f97630e11b0b0ad18136be47735d9aafc48bd2f[m
+Merge: 11b17b6 ee64d5d
+Author: Guscraftin <97472565+Guscraftin@users.noreply.github.com>
+Date:   Sun Oct 30 16:32:36 2022 +0100
+
+    Merge branch 'main' into augustin/display-image
+
+[33mcommit ee64d5d6dce7cf121557570847fea8a1392ec926[m
+Merge: 38be2fb 997171d
+Author: Guscraftin <97472565+Guscraftin@users.noreply.github.com>
+Date:   Sun Oct 30 16:28:44 2022 +0100
+
+    Merge pull request #10 from S3THEIA/augustin/grayscale-image
+    
+    Fix Details
+
+[33mcommit 997171d4a27f95ca193eb671ec07089912945800[m
+Merge: f0eb7dc 38be2fb
+Author: Guscraftin <97472565+Guscraftin@users.noreply.github.com>
+Date:   Sun Oct 30 16:28:00 2022 +0100
+
+    Merge branch 'main' into augustin/grayscale-image
+
+[33mcommit 38be2fb8b3879efff8e89c25acc9b068704c4a84[m
+Merge: 9bc7ba4 c3ad7a7
+Author: Guscraftin <97472565+Guscraftin@users.noreply.github.com>
+Date:   Sun Oct 30 16:20:11 2022 +0100
+
+    Merge pull request #4 from S3THEIA/samy/XOR
+    
+    XOR test
+
+[33mcommit c3ad7a756297039a90181ee2ec7cd7e643e0de7e[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Sun Oct 30 16:16:35 2022 +0100
+
+    Fix
+    
+    Signed-off-by: augustin.glorian <augustin.glorian@epita.fr>
+
+[33mcommit 011d664a91f7b879b33f2687f51d056a9ffc314f[m
+Author: Mathis Villemin <mathis.villemin@epita.fr>
+Date:   Sun Oct 30 16:11:45 2022 +0100
+
+    split-grid == done
+
+[33mcommit 64e81d172af17069c39b13e8074cf21e3db9f182[m
+Author: Same3000 <94645351+Same3000@users.noreply.github.com>
+Date:   Sun Oct 30 15:57:20 2022 +0100
+
+    16H
+    
+    Signed-off-by: Same3000 <94645351+Same3000@users.noreply.github.com>
+
+[33mcommit 821a303328a91fc6e4bfae652aeea326b159323e[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Sun Oct 30 15:28:12 2022 +0100
+
+    Return line in result file
+
+[33mcommit d830dcd8c65dd36a67869e7ab552353004616ed8[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Sun Oct 30 14:22:20 2022 +0100
+
+    Fix colons
+    
+    Signed-off-by: augustin.glorian <augustin.glorian@epita.fr>
+
+[33mcommit 7cc5d8f5f326e3d1c87abaaa74aa170b917084ac[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Sun Oct 30 14:00:52 2022 +0100
+
+    Fix args
+    
+    Signed-off-by: augustin.glorian <augustin.glorian@epita.fr>
+
+[33mcommit 374a28eaab96e5ef2b6365ff331d11d97ea0b62b[m
+Author: Same3000 <94645351+Same3000@users.noreply.github.com>
+Date:   Sun Oct 30 13:13:38 2022 +0100
+
+    fini a tester svp
+    
+    Signed-off-by: Same3000 <94645351+Same3000@users.noreply.github.com>
+
+[33mcommit 53f5bc1ecfc795f1246ccbe38685178f61a7b98b[m
+Author: Guscraftin <97472565+Guscraftin@users.noreply.github.com>
+Date:   Sun Oct 30 11:56:40 2022 +0100
+
+    Reverse display-image/Makefile
+
+[33mcommit 660f6febef076e6a92e9bae20886c50145275fc3[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Sun Oct 30 11:55:24 2022 +0100
+
+    Add rotate-image
+    
+    Signed-off-by: augustin.glorian <augustin.glorian@epita.fr>
+
+[33mcommit b7a5fe396578e3a9cde67c55f6a87927095f60a1[m
+Author: Arthur-lfm <98979121+Arthur-lfm@users.noreply.github.com>
+Date:   Sun Oct 30 11:28:52 2022 +0100
+
+    Add files via upload
+    
+    version de Samy mais réorganisée
+
+[33mcommit f0eb7dc5b90295948979b15d89033b7205c43a1c[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Sun Oct 30 09:03:42 2022 +0100
+
+    Fix Details
+    
+    Signed-off-by: augustin.glorian <augustin.glorian@epita.fr>
+
+[33mcommit 11b17b61b9be1d098d6fd87facfe6de05c84ad03[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Sun Oct 30 08:48:59 2022 +0100
+
+    Fix details (colonne, name screen...)
+    
+    Signed-off-by: augustin.glorian <augustin.glorian@epita.fr>
+
+[33mcommit 46b7afc915c449ca3fb51d0a5fd88209e61b66a8[m
+Author: Guscraftin <augustin.glorian@outlook.com>
+Date:   Wed Oct 26 11:55:57 2022 +0200
+
+    Add provisoire docs
+    
+    Signed-off-by: Guscraftin <augustin.glorian@outlook.com>
+
+[33mcommit ddb08c15c87d97d32cd41dff2ac67eb907e8d60d[m
+Author: Guscraftin <augustin.glorian@outlook.com>
+Date:   Wed Oct 26 11:47:36 2022 +0200
+
+    Add rotate-image (not test)
+    
+    Signed-off-by: Guscraftin <augustin.glorian@outlook.com>
+
+[33mcommit 35ea36bdb1e6029559cf1d042735c570c677f3a0[m
+Author: mathis.villemin <mathis.villemin@epita.fr>
+Date:   Tue Oct 25 13:48:32 2022 +0200
+
+    non tested code for spliting a sudoku grid
+    
+    Signed-off-by: mathis.villemin <mathis.villemin@epita.fr>
+
+[33mcommit e7ed6794786c29cee2eaac2dfff93f888ea48447[m
+Merge: dce61d1 9bad323
+Author: Same3000 <94645351+Same3000@users.noreply.github.com>
+Date:   Mon Oct 24 18:01:28 2022 +0200
+
+    Merge branch 'samy/XOR' of github.com:S3THEIA/ProjectTheia into samy/XOR
+
+[33mcommit dce61d144f5665cd2b7a7480d9ead680923501b8[m
+Author: Same3000 <94645351+Same3000@users.noreply.github.com>
+Date:   Mon Oct 24 17:59:10 2022 +0200
+
+    tout est bon pour la soutenance
+    
+    Signed-off-by: Same3000 <94645351+Same3000@users.noreply.github.com>
+
+[33mcommit 9bad323c5e78ae2b4fa7aae0c323945a8cc32765[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Wed Oct 19 19:22:31 2022 +0200
+
+    Fix README: add clean
+
+[33mcommit 174123ffd97369284e3b84098474a9a8f538665b[m
+Author: Same3000 <samy.yacef@epita.fr>
+Date:   Wed Oct 19 18:32:44 2022 +0200
+
+    XOR test
+    
+    Signed-off-by: Same3000 <samy.yacef@epita.fr>
+
+[33mcommit 9bc7ba479174b731e7046ff733e0fbca40bcf5c7[m
+Merge: 869cffa b1880e7
+Author: renegaglas <94482674+renegaglas@users.noreply.github.com>
+Date:   Wed Oct 19 18:15:13 2022 +0200
+
+    Merge pull request #2 from S3THEIA/augustin/grayscale-image
+    
+    Grayscale-image/display
+
+[33mcommit b1880e750642bc2945bae92d6915092c9c258e03[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Wed Oct 19 08:11:32 2022 +0200
+
+    Architecture with empty file
+
+[33mcommit bdff51f36365e88bb972331acf9aabcdb853d730[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 22:25:24 2022 +0200
+
+    Fix Makefile: with rm gray-picture.jpeg
+
+[33mcommit 47df7149db83072c8192d5d2dcb017b1a735d674[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 21:47:20 2022 +0200
+
+    Fix grayscale.c
+
+[33mcommit 3bc5df0a89685cb305ecd03235ef5d4384733a27[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 18:22:30 2022 +0200
+
+    Add display-image
+
+[33mcommit e5f2dea23c2aa6df492a2abd6cd9cff9f1b5118d[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 18:21:42 2022 +0200
+
+    Add pictures
+
+[33mcommit 9522b58cc55ec3bd164a71b113f443cfcbee7206[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 16:52:18 2022 +0200
+
+    Init branch
+
+[33mcommit b8eca9c0a2edf96d1fe7e8e0d5a90ee5a84213b0[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 20:38:32 2022 +0200
+
+    README in solver directory
+
+[33mcommit 869cffaec55514c4420779d35e56597a6cd75972[m
+Merge: 997b40a 665c1de
+Author: renegaglas <94482674+renegaglas@users.noreply.github.com>
+Date:   Fri Oct 14 20:24:31 2022 +0200
+
+    Merge pull request #1 from S3THEIA/augustin/display-image
+    
+    Display-image
+
+[33mcommit 764adea2863843a6718931e678f997dad1ac96d8[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 18:29:08 2022 +0200
+
+    Add grayscale (non verif)
+
+[33mcommit 665c1ded6f9ff5dc5dcd9985eb90b0535b7f17c6[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 18:22:30 2022 +0200
+
+    Add display-image
+
+[33mcommit acb35dcac53d5d88099328908d336912bf63d27c[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 18:21:42 2022 +0200
+
+    Add pictures
+
+[33mcommit 997b40a4866e550e54070089b60a117f523e302b[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 17:45:25 2022 +0200
+
+    Architecture
+
+[33mcommit a0294d602e464ed7880737420dc8c130a113e2e9[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 17:12:41 2022 +0200
+
+    Init repo
+
+[33mcommit 7c9df2f6527a989e70268b9b603d4492f4cd2f79[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 17:02:48 2022 +0200
+
+    Revert "Init: AUTHORS + README"
+    
+    This reverts commit 72337ebc79bc78116e75287cb151d488708b83f7.
+
+[33mcommit 0f43fe37fd6db90f3bd0037467216f71068ddb6f[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 16:59:01 2022 +0200
+
+    Test protect
+
+[33mcommit 10d86ecd238b43bcb666026269a8516a7ffa94e2[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 16:52:18 2022 +0200
+
+    Init branch
+
+[33mcommit 72337ebc79bc78116e75287cb151d488708b83f7[m
+Author: augustin.glorian <augustin.glorian@epita.fr>
+Date:   Fri Oct 14 11:36:29 2022 +0200
+
+    Init: AUTHORS + README

@@ -9,6 +9,7 @@ all: rotate
 
 SRC = rotate.c
 OBJ = ${SRC:.c=.o}
+DEP = ${SRC:.c=.d}
 EXE = ${SRC:.c=}
 
 rotate: rotate.o
@@ -18,6 +19,7 @@ rotate: rotate.o
 clean:
 	${RM} ${OBJ}
 	${RM} ${EXE}
+	${RM} ${DEP}
 	${RM} rotate-image.jpeg
 
 # END

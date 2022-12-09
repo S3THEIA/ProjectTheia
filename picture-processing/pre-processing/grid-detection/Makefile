@@ -4,13 +4,13 @@ CC = gcc
 CFLAGS = -Wall -Wextra -O3 `pkg-config --cflags sdl2 SDL2_image` -D__NO_INLINE__ -g
 LDLIBS = `pkg-config --libs sdl2 SDL2_image`
 
-all: grid_detection
+all: floodfill
 
-SRC = grid_detection.c
+SRC = floodfill.c
 OBJ = ${SRC:.c=.o}
 EXE = ${SRC:.c=}
 
-grid_detection: grid_detection.o
+grid_detection: floodfill.o
 
 .PHONY: clean
 
