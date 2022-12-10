@@ -3,89 +3,6 @@
 #include <SDL2/SDL_image.h>
 #include <math.h>
 #define M_PI 3.1415926535897932
-//--------------------------------------display--------------------------------
-
-// Updates the display.
-//
-// renderer: Renderer to draw on.
-// texture: Texture that contains the image.
-void draw(SDL_Renderer* renderer, SDL_Texture* texture)
-{
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
-}
-
-// Event loop that calls the relevant event handler.
-//
-// renderer: Renderer to draw on.
-// texture: Texture to display.
-void event_loop(SDL_Renderer* renderer, SDL_Texture* texture)
-{
-    // Draws the image
-    draw(renderer, texture);
-
-    //Creates a variable to get the events.
-    SDL_Event event;
-
-    while(1)
-    {
-        // Waits for an event.
-        SDL_WaitEvent(&event);
-
-        switch (event.type)
-        {
-            // If the "quit" button is pushed, ends the event loop.
-            case SDL_QUIT:
-                return;
-
-            // If the window is resized, updates and redraws.
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-                    draw(renderer, texture);
-        }
-    }
-}
-
-
-void display(char *filepath)
-{
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Creates a window.
-    SDL_Window* window = SDL_CreateWindow("Sudoku Solver: Image display",
-            0, 0, 640, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-    if (window == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Creates a renderer.
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1,
-            SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Create a texture from the image.
-    SDL_Texture* texture = IMG_LoadTexture(renderer, filepath);
-    if (texture == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Gets the width and the height of the texture.
-    int w, h;
-    if (SDL_QueryTexture(texture, NULL, NULL, &w, &h) != 0)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Resize the windows according to the size of the image.
-    SDL_SetWindowSize(window, w, h);
-
-    // Dispatch the events.
-    event_loop(renderer, texture);
-
-    // Destroy the objetcs.
-    SDL_DestroyTexture(texture);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-}
 
 //--------------------------------------rotate image---------------------------
 
@@ -220,13 +137,11 @@ SDL_Surface* RotateSurface(SDL_Surface* surface, double angleDegrees)
     return surfaceRotated;
 }
 //--------------------------------------grid detection-------------------------
-void flood_pixel(Uint32* pixels, SDL_PixelFormat* format, size_t row, size_t col, size_t width, size_t height, size_t *coord, SDL_Surface *tmp)
+void flood_pixel(Uint32* pixels, SDL_PixelFormat* format, size_t row, size_t col, size_t width, size_t height, size_t *coord)
 {
     //amélioration ignore les gap dans une ligne
     //remplacer x et y par row et col
-    printf("row = %li col = %li\n",row,col);
-    if(IMG_SavePNG(tmp, "image.png") != 0)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
+    //printf("x = %li y = %li\n",x,y);
     /**/printf("coord[0] = %li "
             "coord[1] = %li "
             "coord[2] = %li "
@@ -271,7 +186,7 @@ void flood_pixel(Uint32* pixels, SDL_PixelFormat* format, size_t row, size_t col
             // change la couleur du pixel
             Uint8 done = 11;//0.3*r + 0.59*g + 0.11*b;
             pixels[(row - 1) * width + col] = SDL_MapRGB(format, 255, done, done);
-            flood_pixel(pixels, format, row - 1, col, width, height, coord,tmp);
+            flood_pixel(pixels, format, row - 1, col, width, height, coord);
         }
     }
     if (col < width - 1)//go right
@@ -282,7 +197,7 @@ void flood_pixel(Uint32* pixels, SDL_PixelFormat* format, size_t row, size_t col
             // change la couleur du pixel
             Uint8 done = 11;//0.3*r + 0.59*g + 0.11*b;
             pixels[row * width + col + 1] = SDL_MapRGB(format, 255, done, done);
-            flood_pixel(pixels, format, row, col + 1, width, height, coord,tmp);
+            flood_pixel(pixels, format, row, col + 1, width, height, coord);
         }
     }
     
@@ -295,7 +210,7 @@ void flood_pixel(Uint32* pixels, SDL_PixelFormat* format, size_t row, size_t col
             // change la couleur du pixel
             Uint8 done = 11;//0.3*r + 0.59*g + 0.11*b;
             pixels[(row + 1) * width + col] = SDL_MapRGB(format, 255, done, done);
-            flood_pixel(pixels, format, row + 1, col, width, height, coord,tmp);
+            flood_pixel(pixels, format, row + 1, col, width, height, coord);
         }
     }
     if  (col > 0)//go left
@@ -306,7 +221,7 @@ void flood_pixel(Uint32* pixels, SDL_PixelFormat* format, size_t row, size_t col
             // change la couleur du pixel
             Uint8 done = 11;//0.3*r + 0.59*g + 0.11*b;
             pixels[row * width + col - 1] = SDL_MapRGB(format, 255, done, done);
-            flood_pixel(pixels, format, row, col - 1, width, height, coord,tmp);
+            flood_pixel(pixels, format, row, col - 1, width, height, coord);
         }
     }
 }
@@ -362,7 +277,7 @@ void flood_surface(SDL_Surface* surface,size_t *coord)
                 tmp[6] = row;
                 tmp[7] = col;
                 
-                flood_pixel(pixels, format, row, col, width, height, tmp, surface);
+                flood_pixel(pixels, format, row, col, width, height, tmp);
                 printf("end : flood_pixel\n");
                 if (get_air(tmp) > get_air(coord)) //air not define
                 {
