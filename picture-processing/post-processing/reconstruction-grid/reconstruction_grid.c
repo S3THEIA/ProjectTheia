@@ -22,6 +22,7 @@ SDL_Surface* load_image(const char* path)
 }
 
 
+
 int main(int argc, char** argv)
 {
     // Checks the number of arguments.
@@ -41,15 +42,22 @@ int main(int argc, char** argv)
         errx(EXIT_FAILURE, "%s", SDL_GetError());
     }
     int LENGTH = 3;
-    char casename[] = {'S','u','d','o','k','u','(','0',',','0',')',0};
-    // Create a surface from the colored image.
-    SDL_Surface* sudokuCase = load_image(casename);//tester l'existance
-    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,sudokuCase->w * LENGTH * LENGTH,sudokuCase->h * LENGTH * LENGTH,32,0,0,0,0); //creat a black image in function of the width and height of sudokucase
 
+    char *originCase = "original/case0.PNG";
+    char *solvedCase = "solved/case0.PNG";
+
+    // Create a surface from the colored image.
+    SDL_Surface* sudokuCase = NULL;//load_image(casename);//tester l'existance
+    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,sudokuCase->w * LENGTH * LENGTH,sudokuCase->h * LENGTH * LENGTH,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
+
+
+
+    if (IMG_SaveJPG(sudokuGrid, "test",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
 
     //image cutting warning this function do not print delimitation between colone line or block.
     SDL_Rect spriteDst; // define position of each sudokuCase in sudokuGrid
     spriteDst.y = 0;
+    /*
     for (int row = 0; row < LENGTH*LENGTH; row++)
     {
         spriteDst.x = 0;
@@ -65,7 +73,7 @@ int main(int argc, char** argv)
     }
     if (IMG_SaveJPG(sudokuGrid, "resultname.result",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
 
-
+*/
 
     // Free the surface.
     SDL_FreeSurface(sudokuCase);
