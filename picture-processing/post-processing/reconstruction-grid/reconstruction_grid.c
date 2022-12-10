@@ -29,44 +29,48 @@ void construct_image(char* originfilename, char* solvedfilename,SDL_Surface **or
     {
         printf("hey2\n");
         int LENGTH = 3;
-        char originchaine[12] = "";//LENGTH*LENGTH+LENGTH == 12 for sudoku
-        char solvedchaine[12] = "";
+        char originchaine[12 + 10] = "";//LENGTH*LENGTH+LENGTH +1== 13 for sudoku
+        char solvedchaine[12 + 10] = "";
         int height = originCase[0]->h;
         int width = originCase[0]->w;
         SDL_Rect spriteDst;
-        spriteDst.x = 0;
-        while (fgets(originchaine, LENGTH*LENGTH+LENGTH, originfichier) != NULL && fgets(solvedchaine, LENGTH*LENGTH+LENGTH, solvedfichier) != NULL)
+        spriteDst.y = 0;
+        while (fgets(originchaine, LENGTH*LENGTH+LENGTH+10, originfichier) != NULL && fgets(solvedchaine, LENGTH*LENGTH+LENGTH+10, solvedfichier) != NULL)
         {
-            spriteDst.y = 0;
-            printf("heyrow : %s / %s\n",originchaine,solvedchaine);
-
+            spriteDst.x = 0;
+            printf("row begin %s\n",solvedchaine);
             if(originchaine[0] != '\n' && originchaine[1] != '\n')
             {
+                printf("row no jump\n");
                 for (int col  = 0; col < LENGTH*LENGTH+LENGTH-1; col++)
                 {
-                    printf("heycol ; %i | '%c'\n",col,originchaine[col]);
-                    printf("isdigit(originchaine[col])%i\n",isdigit(originchaine[col]));
-                    printf("isdigit(solvedchaine[col])%i\n",isdigit(solvedchaine[col]));
                     if(isdigit(originchaine[col]))
                     {
                         if(SDL_BlitSurface(originCase[originchaine[col] - 49], NULL, sudokuGrid, &spriteDst))
                         {
                             errx(EXIT_FAILURE, "%s", SDL_GetError());
                         }
+                        spriteDst.x += width;
                     }
                     else if (isdigit(solvedchaine[col]))
                     {
-                        printf("solvedchaine[col] - 49 : %i\n",solvedchaine[col] - 49);
                         if(SDL_BlitSurface(solvedCase[solvedchaine[col] - 49], NULL, sudokuGrid, &spriteDst))
                         {
                             errx(EXIT_FAILURE, "%s", SDL_GetError());
                         }
+                        spriteDst.x += width;
                     }
-                    printf("heycol ; %i\n",col);
-                    spriteDst.y += width;
-                    printf("heycol ; %i\n",col);
+                    else
+                    {
+                        spriteDst.x += 10;
+                    }
                 }
-                spriteDst.x += height;
+                spriteDst.y += height;
+            }
+            else
+            {
+                printf("row jump'%s'\n",originchaine);
+                spriteDst.y += 10;
             }
         }
         fclose(originfichier);
