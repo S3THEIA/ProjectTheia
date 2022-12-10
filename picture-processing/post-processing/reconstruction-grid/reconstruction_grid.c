@@ -29,15 +29,15 @@ void construct_image(char* originfilename, char* solvedfilename,SDL_Surface **or
     {
         printf("hey2\n");
         int LENGTH = 3;
-        char originchaine[12 + 10] = "";//LENGTH*LENGTH+LENGTH +1== 13 for sudoku
-        char solvedchaine[12 + 10] = "";
+        char originchaine[14] = "";//LENGTH*LENGTH+LENGTH +2== 14 for sudoku
+        char solvedchaine[14] = "";
         int height = originCase[0]->h;
         int width = originCase[0]->w;
         SDL_Rect spriteDst;
-        spriteDst.y = 0;
-        while (fgets(originchaine, LENGTH*LENGTH+LENGTH+10, originfichier) != NULL && fgets(solvedchaine, LENGTH*LENGTH+LENGTH+10, solvedfichier) != NULL)
+        spriteDst.y = 5;
+        while (fgets(originchaine, LENGTH*LENGTH+LENGTH+2, originfichier) != NULL && fgets(solvedchaine, LENGTH*LENGTH+LENGTH+2, solvedfichier) != NULL)
         {
-            spriteDst.x = 0;
+            spriteDst.x = 5;
             printf("row begin %s\n",solvedchaine);
             if(originchaine[0] != '\n' && originchaine[1] != '\n')
             {
@@ -50,7 +50,7 @@ void construct_image(char* originfilename, char* solvedfilename,SDL_Surface **or
                         {
                             errx(EXIT_FAILURE, "%s", SDL_GetError());
                         }
-                        spriteDst.x += width;
+                        spriteDst.x += width + 5;
                     }
                     else if (isdigit(solvedchaine[col]))
                     {
@@ -58,14 +58,14 @@ void construct_image(char* originfilename, char* solvedfilename,SDL_Surface **or
                         {
                             errx(EXIT_FAILURE, "%s", SDL_GetError());
                         }
-                        spriteDst.x += width;
+                        spriteDst.x += width + 5;
                     }
                     else
                     {
                         spriteDst.x += 10;
                     }
                 }
-                spriteDst.y += height;
+                spriteDst.y += height + 5;
             }
             else
             {
@@ -117,7 +117,7 @@ int main(int argc, char** argv)
         originCase[i] = load_image(originCase_path);
         solvedCase[i] = load_image(solvedCase_path);
     }
-    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,originCase[0]->w * LENGTH * LENGTH + 20,originCase[0]->h * LENGTH * LENGTH + 20,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
+    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,(originCase[0]->w + 5) * LENGTH * LENGTH + 20 + 10,(originCase[0]->h + 5) * LENGTH * LENGTH + 20 + 10,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
     construct_image("sudoku", "sudoku.result",originCase,solvedCase,sudokuGrid);
     
 
