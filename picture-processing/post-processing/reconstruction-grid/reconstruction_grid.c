@@ -44,24 +44,25 @@ int main(int argc, char** argv)
     int LENGTH = 3;
 
     char originCase_path[] = {'.','/','o','r','i','g','i','n','/','c','a','s','e','0','.','p','n','g',0};
-    //char *solvedCase = "solved/case0.PNG";
+    char solvedCase_path[] = {'.','/','s','o','l','v','e','d','/','c','a','s','e','0','.','p','n','g',0};
 
     // Create a surface from the colored image.
     char tmp[] = {'t','e','s','t','c','a','s','e','0',0};
+    char tmp2[] = {'t','e','s','t','c','a','s','e','0','s','o','l','v','e','d',0};
 
     SDL_Surface *originCase[9];
+    SDL_Surface *solvedCase[9];
+
     for (char i = 0; i < 9; i++)
     {
-        printf("boucle for : %i\n",i);
         originCase_path[13] = 49 + i;
-        printf("originCase_path%s\n",originCase_path);
+        solvedCase_path[13] = 49 + i;
         originCase[i] = load_image(originCase_path);
-        printf("boucle for : %i\n",i);
+        solvedCase[i] = load_image(originCase_path);
         tmp[8] = 49 + i;
-        printf("boucle for : %i\n",i);
-        printf("tmp%s\n",tmp);
+        tmp2[8] = 49 + i;
         if (IMG_SaveJPG(originCase[i], tmp,100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
-        printf("boucle for : %i\n",i);
+        if (IMG_SaveJPG(solvedCase[i], tmp2,100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
     }
     //SDL_Surface* sudokuCase = load_image("./origin/case1.png");//tester l'existance
     SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,originCase[0]->w * LENGTH * LENGTH,originCase[0]->h * LENGTH * LENGTH,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
