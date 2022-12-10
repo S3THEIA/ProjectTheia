@@ -117,7 +117,7 @@ int main(int argc, char** argv)
         originCase[i] = load_image(originCase_path);
         solvedCase[i] = load_image(solvedCase_path);
     }
-    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,originCase[0]->w * LENGTH * LENGTH* LENGTH,originCase[0]->h * LENGTH * LENGTH * LENGTH,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
+    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,originCase[0]->w * LENGTH * LENGTH + 20,originCase[0]->h * LENGTH * LENGTH + 20,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
     construct_image("sudoku", "sudoku.result",originCase,solvedCase,sudokuGrid);
     
 
