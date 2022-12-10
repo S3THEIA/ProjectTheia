@@ -17,7 +17,7 @@ reconstruction_grid: reconstruction_grid.o
 clean:
 	${RM} ${OBJ}
 	${RM} ${EXE}
-	${RM} *.result
+#	${RM} *.result
 	${RM} *.d
 	${RM} testcase*
 

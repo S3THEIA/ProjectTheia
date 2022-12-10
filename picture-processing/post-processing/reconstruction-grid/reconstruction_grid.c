@@ -2,7 +2,6 @@
 #include <err.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
 SDL_Surface* load_image(const char* path)
 {
     // Load the image into a temporary surface.
@@ -21,7 +20,63 @@ SDL_Surface* load_image(const char* path)
     return surface;
 }
 
+void construct_image(char* originfilename, char* solvedfilename,SDL_Surface **originCase,SDL_Surface **solvedCase,SDL_Surface *sudokuGrid)
+{
+    FILE* originfichier = fopen(originfilename,"r");
+    FILE* solvedfichier = fopen(solvedfilename,"r");
+    printf("hey1\n");
+    if (originfichier != NULL && solvedfichier != NULL)
+    {
+        printf("hey2\n");
+        int LENGTH = 3;
+        char originchaine[12] = "";//LENGTH*LENGTH+LENGTH == 12 for sudoku
+        char solvedchaine[12] = "";
+        int height = originCase[0]->h;
+        int width = originCase[0]->w;
+        SDL_Rect spriteDst;
+        spriteDst.x = 0;
+        while (fgets(originchaine, LENGTH*LENGTH+LENGTH, originfichier) != NULL && fgets(solvedchaine, LENGTH*LENGTH+LENGTH, solvedfichier) != NULL)
+        {
+            spriteDst.y = 0;
+            printf("heyrow : %s / %s\n",originchaine,solvedchaine);
 
+            if(originchaine[0] != '\n' && originchaine[1] != '\n')
+            {
+                for (int col  = 0; col < LENGTH*LENGTH+LENGTH-1; col++)
+                {
+                    printf("heycol ; %i | '%c'\n",col,originchaine[col]);
+                    printf("isdigit(originchaine[col])%i\n",isdigit(originchaine[col]));
+                    printf("isdigit(solvedchaine[col])%i\n",isdigit(solvedchaine[col]));
+                    if(isdigit(originchaine[col]))
+                    {
+                        if(SDL_BlitSurface(originCase[originchaine[col] - 49], NULL, sudokuGrid, &spriteDst))
+                        {
+                            errx(EXIT_FAILURE, "%s", SDL_GetError());
+                        }
+                    }
+                    else if (isdigit(solvedchaine[col]))
+                    {
+                        printf("solvedchaine[col] - 49 : %i\n",solvedchaine[col] - 49);
+                        if(SDL_BlitSurface(solvedCase[solvedchaine[col] - 49], NULL, sudokuGrid, &spriteDst))
+                        {
+                            errx(EXIT_FAILURE, "%s", SDL_GetError());
+                        }
+                    }
+                    printf("heycol ; %i\n",col);
+                    spriteDst.y += width;
+                    printf("heycol ; %i\n",col);
+                }
+                spriteDst.x += height;
+            }
+        }
+        fclose(originfichier);
+        fclose(solvedfichier);
+    }
+    else
+    {
+         printf("%s or %s is not readable",originfilename, solvedfilename);
+    }
+}
 
 int main(int argc, char** argv)
 {
@@ -47,27 +102,20 @@ int main(int argc, char** argv)
     char solvedCase_path[] = {'.','/','s','o','l','v','e','d','/','c','a','s','e','0','.','p','n','g',0};
 
     // Create a surface from the colored image.
-    char tmp[] = {'t','e','s','t','c','a','s','e','0',0};
-    char tmp2[] = {'t','e','s','t','c','a','s','e','0','s','o','l','v','e','d',0};
-
     SDL_Surface *originCase[9];
     SDL_Surface *solvedCase[9];
 
     for (char i = 0; i < 9; i++)
     {
+        //load each image once and for all
         originCase_path[13] = 49 + i;
         solvedCase_path[13] = 49 + i;
         originCase[i] = load_image(originCase_path);
         solvedCase[i] = load_image(solvedCase_path);
-        tmp[8] = 49 + i;
-        tmp2[8] = 49 + i;
-        if (IMG_SaveJPG(originCase[i], tmp,100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
-        if (IMG_SaveJPG(solvedCase[i], tmp2,100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
     }
-    //SDL_Surface* sudokuCase = load_image("./origin/case1.png");//tester l'existance
-    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,originCase[0]->w * LENGTH * LENGTH,originCase[0]->h * LENGTH * LENGTH,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
-
-
+    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,originCase[0]->w * LENGTH * LENGTH* LENGTH,originCase[0]->h * LENGTH * LENGTH * LENGTH,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
+    construct_image("sudoku", "sudoku.result",originCase,solvedCase,sudokuGrid);
+    
 
     //if (IMG_SaveJPG(sudokuGrid, "testgrid",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
     //printf("image 1");
@@ -75,8 +123,6 @@ int main(int argc, char** argv)
     //printf("image 2");
 
     //image cutting warning this function do not print delimitation between colone line or block.
-    SDL_Rect spriteDst; // define position of each sudokuCase in sudokuGrid
-    spriteDst.y = 0;
     /*
     for (int row = 0; row < LENGTH*LENGTH; row++)
     {
@@ -92,9 +138,8 @@ int main(int argc, char** argv)
         spriteDst.y += sudokuCase->h; //define the position of each case in sudokuGrid
     }
     if (IMG_SaveJPG(sudokuGrid, "resultname.result",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
-
 */
-
+    if (IMG_SaveJPG(sudokuGrid, "resultname.result",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
     // Free the surface.
     //SDL_FreeSurface(sudokuCase);
     SDL_FreeSurface(sudokuGrid);
