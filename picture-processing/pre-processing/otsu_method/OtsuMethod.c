@@ -1,6 +1,7 @@
 #include <err.h>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <math.h>
 
 // Loads an image in a surface.
 // The format of the surface is SDL_PIXELFORMAT_RGB888.
@@ -47,26 +48,27 @@ void histo(unsigned int histo[256], unsigned len, Uint32* image,
   }
 }
 
+
 int otsu(unsigned int histo[256], unsigned w,
          unsigned h) 
 {
   double final_thresh = -1.0;
   int final_t = -1;
   double mean_weight = 1.0 / (w * h);
-  for (int t = 1; t < 255; t++) 
+  for (int i = 1; i < 255; i++) 
   {
-    double wb = (double) sum(histo, 0, t) * mean_weight;
-    double wf = (double) sum(histo, t, 255) * mean_weight;
+    double wb = (double) sum(histo, 0, i) * mean_weight;
+    double wf = (double) sum(histo, i, 255) * mean_weight;
 
-    int mub = mean(histo, 0, t);
-    int muf = mean(histo, t, 255);
+    int mub = mean(histo, 0, i);
+    int muf = mean(histo, i, 255);
 
     double value = wb * wf * (mub - muf);
     value *= value;
     if (value > final_thresh) 
     {
       final_thresh = value;
-      final_t = t;
+      final_t = i;
     }
   }
   return final_t;
@@ -86,9 +88,16 @@ int main(int argc, char** argv)
     unsigned int len = image_surface->w*image_surface->h;
     Uint32* image = image_surface->pixels;
     unsigned int h[256];
+    for(int i = 0; i<256;i++)
+    {
+      h[i] = 0;
+    }
     histo(h, len, image, image_surface);
 
     int t = otsu(h, image_surface->w, image_surface->h);
+    
+    printf("t = %i \n", t);
+
     int lock = SDL_LockSurface(image_surface);
     if(lock != 0)
         errx(EXIT_FAILURE, "%s", SDL_GetError());
@@ -101,8 +110,8 @@ int main(int argc, char** argv)
       Uint8 av = r < t ? 0 : 255; // Black and white
       pixel = SDL_MapRGB(image_surface->format, av, av, av);
       image[i] = pixel;
-  }
-int save = IMG_SaveJPG(image_surface, "otsu-picture.jpeg", 100);
+    }
+    int save = IMG_SaveJPG(image_surface, "otsu-picture.jpeg", 100);
     if (save != 0) 
         errx(EXIT_FAILURE, "%s", SDL_GetError());
   SDL_UnlockSurface(image_surface);
