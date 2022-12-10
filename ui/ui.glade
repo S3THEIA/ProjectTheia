@@ -83,6 +83,7 @@
                         <property name="receives-default">True</property>
                         <property name="valign">center</property>
                         <property name="margin-end">10</property>
+                        <signal name="clicked" handler="click_grayscale" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">True</property>
@@ -120,8 +121,8 @@
                     <property name="margin-end">40</property>
                     <property name="margin-bottom">10</property>
                     <child>
-                      <object class="GtkButton" id="button-grid-detection">
-                        <property name="label" translatable="yes">Grid detection</property>
+                      <object class="GtkButton">
+                        <property name="label" translatable="yes">Otsu method</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -135,8 +136,8 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton">
-                        <property name="label" translatable="yes">???</property>
+                      <object class="GtkButton" id="button-grid-detection">
+                        <property name="label" translatable="yes">Grid detection</property>
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <property name="receives-default">True</property>
@@ -196,6 +197,7 @@
                     <property name="receives-default">True</property>
                     <property name="valign">center</property>
                     <property name="margin-start">10</property>
+                    <signal name="clicked" handler="click_cancel" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">True</property>
@@ -211,7 +213,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button-save">
+              <object class="GtkButton" id="button_save">
                 <property name="label" translatable="yes">Save as</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
@@ -219,6 +221,7 @@
                 <property name="valign">center</property>
                 <property name="margin-start">100</property>
                 <property name="margin-end">100</property>
+                <signal name="clicked" handler="click_save" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -259,7 +262,7 @@
             <property name="valign">start</property>
             <property name="xpad">1</property>
             <property name="ypad">1</property>
-            <property name="pixbuf">../../01-image</property>
+            <property name="pixbuf">../pictures/01-image_easy.jpeg</property>
             <property name="pixel-size">0</property>
           </object>
           <packing>

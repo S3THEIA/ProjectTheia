@@ -14,5 +14,6 @@ $(foreach f, $(EXE), $(eval $(f):))
 
 clean:
 	${RM} $(EXE)
+	${RM} *.jpeg
 
 # END
