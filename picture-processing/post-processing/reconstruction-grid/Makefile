@@ -19,5 +19,7 @@ clean:
 	${RM} ${EXE}
 	${RM} *.result
 	${RM} *.d
+	${RM} testcase*
+
 
 # END

@@ -43,28 +43,28 @@ int main(int argc, char** argv)
     }
     int LENGTH = 3;
 
-    char originCase[] = {'.','/','o','r','i','g','i','n','/','c','a','s','e','0','.','p','n','g',0};
+    char originCase_path[] = {'.','/','o','r','i','g','i','n','/','c','a','s','e','0','.','p','n','g',0};
     //char *solvedCase = "solved/case0.PNG";
 
     // Create a surface from the colored image.
-    SDL_Surface* sudokuCase;
     char tmp[] = {'t','e','s','t','c','a','s','e','0',0};
-    for (char i = 1; i < 10; i++)
+
+    SDL_Surface *originCase[9];
+    for (char i = 0; i < 9; i++)
     {
         printf("boucle for : %i\n",i);
-        originCase[13] = 48 + i;
+        originCase_path[13] = 49 + i;
+        printf("originCase_path%s\n",originCase_path);
+        originCase[i] = load_image(originCase_path);
         printf("boucle for : %i\n",i);
-        printf("originCase%s\n",originCase);
-        sudokuCase = load_image(originCase);
+        tmp[8] = 49 + i;
         printf("boucle for : %i\n",i);
-        tmp[8] = 48 + i;
-        printf("boucle for : %i\n",i);
-        printf("tmp%s\s\n",tmp);
-        if (IMG_SaveJPG(sudokuCase, tmp,100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
+        printf("tmp%s\n",tmp);
+        if (IMG_SaveJPG(originCase[i], tmp,100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
         printf("boucle for : %i\n",i);
     }
     //SDL_Surface* sudokuCase = load_image("./origin/case1.png");//tester l'existance
-    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,sudokuCase->w * LENGTH * LENGTH,sudokuCase->h * LENGTH * LENGTH,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
+    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,originCase[0]->w * LENGTH * LENGTH,originCase[0]->h * LENGTH * LENGTH,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
 
 
 
@@ -95,8 +95,11 @@ int main(int argc, char** argv)
 */
 
     // Free the surface.
-    SDL_FreeSurface(sudokuCase);
+    //SDL_FreeSurface(sudokuCase);
     SDL_FreeSurface(sudokuGrid);
+    for (size_t i = 0; i < 9; i++)
+        free(originCase[i]);
+
 
     // Destroy the objetcs.
     SDL_Quit();
