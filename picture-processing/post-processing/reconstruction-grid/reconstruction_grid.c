@@ -58,7 +58,7 @@ int main(int argc, char** argv)
         originCase_path[13] = 49 + i;
         solvedCase_path[13] = 49 + i;
         originCase[i] = load_image(originCase_path);
-        solvedCase[i] = load_image(originCase_path);
+        solvedCase[i] = load_image(solvedCase_path);
         tmp[8] = 49 + i;
         tmp2[8] = 49 + i;
         if (IMG_SaveJPG(originCase[i], tmp,100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
