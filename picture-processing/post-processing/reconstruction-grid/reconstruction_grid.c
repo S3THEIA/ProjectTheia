@@ -43,19 +43,35 @@ int main(int argc, char** argv)
     }
     int LENGTH = 3;
 
-    char *originCase = "/origin/case1.png";
+    char originCase[] = {'.','/','o','r','i','g','i','n','/','c','a','s','e','0','.','p','n','g',0};
     //char *solvedCase = "solved/case0.PNG";
 
     // Create a surface from the colored image.
-    SDL_Surface* sudokuCase = load_image("./origin/case1.png");//tester l'existance
+    SDL_Surface* sudokuCase;
+    char tmp[] = {'t','e','s','t','c','a','s','e','0',0};
+    for (char i = 1; i < 10; i++)
+    {
+        printf("boucle for : %i\n",i);
+        originCase[13] = 48 + i;
+        printf("boucle for : %i\n",i);
+        printf("originCase%s\n",originCase);
+        sudokuCase = load_image(originCase);
+        printf("boucle for : %i\n",i);
+        tmp[8] = 48 + i;
+        printf("boucle for : %i\n",i);
+        printf("tmp%s\s\n",tmp);
+        if (IMG_SaveJPG(sudokuCase, tmp,100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
+        printf("boucle for : %i\n",i);
+    }
+    //SDL_Surface* sudokuCase = load_image("./origin/case1.png");//tester l'existance
     SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,sudokuCase->w * LENGTH * LENGTH,sudokuCase->h * LENGTH * LENGTH,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
 
 
 
-    if (IMG_SaveJPG(sudokuGrid, "testgrid",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
-    printf("image 1");
-    if (IMG_SaveJPG(sudokuCase, "testcase",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
-    printf("image 2");
+    //if (IMG_SaveJPG(sudokuGrid, "testgrid",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
+    //printf("image 1");
+    //if (IMG_SaveJPG(sudokuCase, "testcase",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
+    //printf("image 2");
 
     //image cutting warning this function do not print delimitation between colone line or block.
     SDL_Rect spriteDst; // define position of each sudokuCase in sudokuGrid
