@@ -1,12 +1,14 @@
 # Pour utiliser l'application, voici les étapes :
 
-Clonez ce répertoire avec la commande `git clone`.
-Une fois cela fait, allez dans le dossier ProjectTheia avec la commande `cd ProjectTheia`.
-Excécutez la commande `make`.
-Puis pour ouvrir l'interface graphique, utilisez la commande `./ui`.
+- Clonez ce répertoire avec la commande `git clone`.
+- Une fois cela fait, allez dans le dossier ProjectTheia avec la commande :
+`cd ProjectTheia`.
+- Excécutez la commande `make`.
+- Puis pour ouvrir l'interface graphique, utilisez la commande `./ui`.
 
 
-Enfin, pour nettoyer le répertoire, effectuez la commande `make clean` à la racine du projet.
+Enfin, pour nettoyer le répertoire, effectuez la commande `make clean`
+à la racine du projet.
 
 
 ### Architecture du projet
