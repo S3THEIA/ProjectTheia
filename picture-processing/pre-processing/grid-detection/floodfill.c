@@ -3,106 +3,14 @@
 #include <SDL2/SDL_image.h>
 #include <math.h>
 #define M_PI 3.1415926535897932
-//--------------------------------------display--------------------------------
-
-// Updates the display.
-//
-// renderer: Renderer to draw on.
-// texture: Texture that contains the image.
-void draw(SDL_Renderer* renderer, SDL_Texture* texture)
-{
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-    SDL_RenderPresent(renderer);
-}
-
-// Event loop that calls the relevant event handler.
-//
-// renderer: Renderer to draw on.
-// texture: Texture to display.
-void event_loop(SDL_Renderer* renderer, SDL_Texture* texture)
-{
-    // Draws the image
-    draw(renderer, texture);
-
-    //Creates a variable to get the events.
-    SDL_Event event;
-
-    while(1)
-    {
-        // Waits for an event.
-        SDL_WaitEvent(&event);
-
-        switch (event.type)
-        {
-            // If the "quit" button is pushed, ends the event loop.
-            case SDL_QUIT:
-                return;
-
-            // If the window is resized, updates and redraws.
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-                    draw(renderer, texture);
-        }
-    }
-}
-
-
-void display(char *filepath)
-{
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Creates a window.
-    SDL_Window* window = SDL_CreateWindow("Sudoku Solver: Image display",
-            0, 0, 640, 400, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-    if (window == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Creates a renderer.
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1,
-            SDL_RENDERER_ACCELERATED);
-    if (renderer == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Create a texture from the image.
-    SDL_Texture* texture = IMG_LoadTexture(renderer, filepath);
-    if (texture == NULL)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Gets the width and the height of the texture.
-    int w, h;
-    if (SDL_QueryTexture(texture, NULL, NULL, &w, &h) != 0)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Resize the windows according to the size of the image.
-    SDL_SetWindowSize(window, w, h);
-
-    // Dispatch the events.
-    event_loop(renderer, texture);
-
-    // Destroy the objetcs.
-    SDL_DestroyTexture(texture);
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-}
 
 //--------------------------------------rotate image---------------------------
-
 SDL_Surface* load_image(const char* path)
 {
-    // Load the image into a temporary surface.
-    SDL_Surface* tempSurface = IMG_Load(path);
-    if (tempSurface == NULL) errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Create a new surface in the desired format.
-    SDL_Surface* surface = SDL_ConvertSurfaceFormat(tempSurface, SDL_PIXELFORMAT_RGB888, 0);
-    if (surface == NULL) errx(EXIT_FAILURE, "%s", SDL_GetError());
-
-    // Free the temporary surface.
-    SDL_FreeSurface(tempSurface);
-
-    // Return the surface in the desired format.
+    SDL_Surface* tmp = IMG_Load(path);
+    SDL_Surface* surface = SDL_ConvertSurfaceFormat(tmp, SDL_PIXELFORMAT_RGB888,
+            0);
+    SDL_FreeSurface(tmp);
     return surface;
 }
 
@@ -111,7 +19,6 @@ Uint8* ref(SDL_Surface *surface, int i, int j)
     int bytesPerPixel = surface->format->BytesPerPixel;
     return (Uint8 *)surface->pixels + j * surface->pitch + i * bytesPerPixel;
 }
-
 
 Uint32 get_pixel(SDL_Surface *surface, int i, int j)
 {
@@ -219,115 +126,66 @@ SDL_Surface* RotateSurface(SDL_Surface* surface, double angleDegrees)
 
     return surfaceRotated;
 }
+
 //--------------------------------------grid detection-------------------------
-void flood_pixel(Uint32* pixels, SDL_PixelFormat* format, size_t row, size_t col, size_t width, size_t height, size_t *coord, SDL_Surface *tmp)
+void flood_pixel(Uint32* pixels, SDL_PixelFormat* format, size_t row, size_t col, size_t width, size_t height, size_t *coord)
 {
-    //amélioration ignore les gap dans une ligne
-    //remplacer x et y par row et col
-    printf("row = %li col = %li\n",row,col);
-    if(IMG_SavePNG(tmp, "image.png") != 0)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
-    /**/printf("coord[0] = %li "
-            "coord[1] = %li "
-            "coord[2] = %li "
-            "coord[3] = %li "
-            "coord[4] = %li "
-            "coord[5] = %li "
-            "coord[6] = %li "
-            "coord[7] = %li\n"
-            ,coord[0],coord[1],coord[2],coord[3],coord[4],coord[5],coord[6],coord[7]);
     Uint8 r, g, b;
     //definir les coordonnees des coins
     if(row < coord[0] || (row == coord[0] && col < coord[1]) )
     {
-        printf("hey\n");
+        printf("up left\n");
         coord[0] = row;
         coord[1] = col;
     }
-    if(col < coord[7] || (col == coord[7] && row > coord[6]) )
+    else if(col < coord[7] || (col == coord[7] && row > coord[6]) )
     {
-        printf("hey\n");
+        printf("down left\n");
         coord[6] = row;
         coord[7] = col;
     }
-    if(col > coord[3] || (col == coord[3] && row < coord[2]) )
+    else if(col > coord[3] || (col == coord[3] && row < coord[2]) )
     {
+        printf("up right\n");
         coord[2] = row;
         coord[3] = col;
     }
-    if(row > coord[4] || (row == coord[4] && col > coord[5]) )
+    else if(row > coord[4] || (row == coord[4] && col > coord[5]) )
     {
+        printf("down right\n");
         coord[4] = row;
         coord[5] = col;
     }
     
-    //apel sur les pixels adjacents
-    if ( row > 0)//go up
+    //apel sur les pixels proche
+    size_t range = 5;
+    for (size_t offset_row = -range; offset_row <= range; offset_row++)
     {
-        SDL_GetRGB(pixels[(row - 1) * width + col], format, &r, &g, &b);
-        if (r < 10 && g < 10 && b < 10)
+        for (size_t offset_col = -range; offset_col <= range; offset_col++)
         {
+            if (0<= row + offset_row && row + offset_row < height && 0<= col + offset_col && col + offset_col < width)
+            {
+                printf("hey\n");
+                SDL_GetRGB(pixels[(row + offset_row) * width + col + offset_col], format, &r, &g, &b);
+                if (r <  20 && g < 20 && b < 20)
+                {
+                 Uint8 done = 11;//0.3*r + 0.59*g + 0.11*b;
+                 pixels[(row + offset_row) * width + col + offset_col] = SDL_MapRGB(format, 255, done, done);
+                 flood_pixel(pixels, format, row + offset_row, col + offset_col, width, height, coord);
+                }
+            }
+        }
+    }
 
-            // change la couleur du pixel
-            Uint8 done = 11;//0.3*r + 0.59*g + 0.11*b;
-            pixels[(row - 1) * width + col] = SDL_MapRGB(format, 255, done, done);
-            flood_pixel(pixels, format, row - 1, col, width, height, coord,tmp);
-        }
-    }
-    if (col < width - 1)//go right
-    {
-        SDL_GetRGB(pixels[row * width + col + 1], format, &r, &g, &b);
-        if (r < 10 && g < 10 && b < 10)
-        {
-            // change la couleur du pixel
-            Uint8 done = 11;//0.3*r + 0.59*g + 0.11*b;
-            pixels[row * width + col + 1] = SDL_MapRGB(format, 255, done, done);
-            flood_pixel(pixels, format, row, col + 1, width, height, coord,tmp);
-        }
-    }
-    
-    if (row < height - 1)//go down
-    {
-        
-        SDL_GetRGB(pixels[(row + 1) * width + col], format, &r, &g, &b);
-        if (r < 10 && g < 10 && b < 10)
-        {
-            // change la couleur du pixel
-            Uint8 done = 11;//0.3*r + 0.59*g + 0.11*b;
-            pixels[(row + 1) * width + col] = SDL_MapRGB(format, 255, done, done);
-            flood_pixel(pixels, format, row + 1, col, width, height, coord,tmp);
-        }
-    }
-    if  (col > 0)//go left
-    {
-        SDL_GetRGB(pixels[row * width + col - 1], format, &r, &g, &b);
-        if (r < 10 && g < 10 && b < 10)
-        {
-            // change la couleur du pixel
-            Uint8 done = 11;//0.3*r + 0.59*g + 0.11*b;
-            pixels[row * width + col - 1] = SDL_MapRGB(format, 255, done, done);
-            flood_pixel(pixels, format, row, col - 1, width, height, coord,tmp);
-        }
-    }
 }
 
-int get_air(size_t *coord)
+int get_aire(size_t *coord)
 {
-    return (coord[2] - coord[6]) * (coord[5] - coord[1]);
+    return abs((coord[4] - coord[0]) * (coord[3] - coord[7]));
 }
 
 void flood_surface(SDL_Surface* surface,size_t *coord)
 {
-    //coord[0] == coin haut gauche x
-    //coord[1] == coin haut gauche y
-    //coord[2] == coin haut droit x
-    //coord[3] == coin haut droit y
-    //coord[4] == coin bas droit x
-    //coord[5] == coin bas droit y
-    //coord[6] == coin bas gauche x
-    //coord[7] == coin bas gauche y
-
-    //optenir les pcoin semble compliqué
     size_t tmp[8];
     // Get the array of pixels.
     Uint32* pixels = surface->pixels;
@@ -342,14 +200,13 @@ void flood_surface(SDL_Surface* surface,size_t *coord)
     // Convert each pixel into grayscale.
     SDL_PixelFormat* format = surface->format;
     Uint8 r, g, b;
-    for (size_t row = 1; row < 2; row++)
+    for (size_t row = 0; row < surface->h; row++)
     {
-        for (size_t col = 1; col < 2; col++)
+        for (size_t col = 0 ; col < surface->w; col++)
         {
             SDL_GetRGB(pixels[row * width + col], format, &r, &g, &b);
-            if (r < 10 && g < 10 && b < 10)
+            if (r < 20 && g < 20 && b < 20)
             {
-                printf("x = %li y = %li\n",row,col);
                 tmp[0] = row;
                 tmp[1] = col;
 
@@ -362,109 +219,108 @@ void flood_surface(SDL_Surface* surface,size_t *coord)
                 tmp[6] = row;
                 tmp[7] = col;
                 
-                flood_pixel(pixels, format, row, col, width, height, tmp, surface);
-                printf("end : flood_pixel\n");
-                if (get_air(tmp) > get_air(coord)) //air not define
+                flood_pixel(pixels, format, row, col, width, height, tmp);
+                if (get_aire(tmp) > get_aire(coord)) //air not define
                 {
-                    coord = tmp;
+                    for (size_t i = 0; i < 9; i++)
+                    {
+                        coord[i] = tmp[i];
+                    }
                 }
             }
         }
     }
     // Unlock the surface.
     SDL_UnlockSurface(surface);
-    printf("end : flood_surface\n");
     // coord est le rectangle le plus grand soit le sudoku
 }
 
 
 int main(int argc, char **argv)
 {
-    /*if (argc != 2)
+    if (argc != 2)
     {
         return 0;
-    }*/
-    printf("hey\n");
-    SDL_Surface *image = load_image("../../../pictures/image_01_easy.jpeg");//argv[1]);
-    //SDL_Surface *image = load_image("../split-grid/Sudoku(0,0)");
-    SDL_Surface* tempSurface = NULL;
-    SDL_Rect spriteSrctmp;
-    spriteSrctmp.w = 500;
-    spriteSrctmp.h = 500;
-    spriteSrctmp.x = 0;
-    spriteSrctmp.y = 0;
-    printf("hey\n");
-    tempSurface = SDL_BlitSurface(image, &spriteSrctmp, tempSurface, NULL);
-    printf("truc\n");
-    printf("hey%i\n",tempSurface->w);
+    }
+
+    // Initialize the SDL
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+        errx(EXIT_FAILURE, "%s", SDL_GetError());
+
+    SDL_Surface *image = load_image(argv[1]);
+    
+    if (image == NULL)
+        errx(EXIT_FAILURE, "%s", SDL_GetError());
     
     size_t coord[8] = {0};
-    flood_surface(tempSurface, coord);
+    flood_surface(image, coord);
     // coord == coordonnée des angles les plus écartés du sudoku
-
-    //redimentionner l'image avec les coords
-    //faire attention à ne pas seg fault
-    //  haut gauche (coord[6] - 10,coord[1] - 10)
-    //  haut droit (coord[2] + 10,coord[1] - 10)
-    //  bas droit (coord[2] + 10,coord[5] + 10)
-    //  bas gauche (coord[6] - 10,coord[5] + 10)
-
-    if(IMG_SavePNG(image, "rotate-image.jpeg") != 0)
-        errx(EXIT_FAILURE, "%s", SDL_GetError());
+    printf("coord[0] = %li "
+            "coord[1] = %li "
+            "coord[2] = %li "
+            "coord[3] = %li "
+            "coord[4] = %li "
+            "coord[5] = %li "
+            "coord[6] = %li "
+            "coord[7] = %li\n"
+            ,coord[0],coord[1],coord[2],coord[3],coord[4],coord[5],coord[6],coord[7]);
+    //to test
+    if (IMG_SaveJPG(image,  "flood-image.jpg", 100) != 0)
+            {
+                errx(EXIT_FAILURE, "%s", SDL_GetError());
+            }
 
     //image cutting
     SDL_Rect spriteSrc; // define width and height of one sudoku
-    spriteSrc.w = coord[5] - coord[1];
-    spriteSrc.h = coord[2] - coord[6];
-    printf("test\n");
 
-
-    if (coord[6] >= 10)
+    if (coord[0] >= 10)
     {
-        spriteSrc.x = coord[6] - 10; //define the position of each case to copy
+        spriteSrc.x = coord[0] - 10;
     }
     else
     {
         spriteSrc.x = 0;
     }
-    if (coord[1] >= 10)
+    if (coord[7] >= 10)
     {
-        spriteSrc.y = coord[1] - 10; //define the position of each case to copy
+        spriteSrc.y = coord[7] - 10;
     }
     else
     {
         spriteSrc.y = 0;
     }
 
-    if (coord[2] <= image->w - 10)
+    if (coord[3] <= image->w - 10)
     {
-        spriteSrc.w = coord[2] - coord[6] + 10;
+        spriteSrc.w = coord[3] - coord[7] + 10;
     }
     else
     {
-        spriteSrc.x = coord[2] - coord[6] ;
+        spriteSrc.w = coord[3] - coord[7] ;
     }
-    if (coord[5] <= image->h - 10)
+    if (coord[4] <= image->h - 10)
     {
-        spriteSrc.h = coord[5] - coord[1] + 10; //define the position of each case to copy
+        spriteSrc.h = coord[4] - coord[0] + 10;
     }
     else
     {
-        spriteSrc.h = image->h;
+        spriteSrc.h = coord[4] - coord[0];
     }
-    printf("test\n");
+    SDL_Surface* resize_Surface = NULL;
+    resize_Surface = SDL_CreateRGBSurface(0, spriteSrc.w, spriteSrc.h, 32,0, 0, 0, 0);
+    if(resize_Surface == NULL)
+    {
+        errx(EXIT_FAILURE, "%s", SDL_GetError());
+    }
 
-
-    SDL_Surface* resize_Surface = SDL_CreateRGBSurface(0,spriteSrc.w,spriteSrc.h,0,0,0,0,0);
-    SDL_BlitSurface(image, &spriteSrc, resize_Surface, NULL);
-
-
-    printf("test3\n");
-
-    //call rotation with angle
-    //rotation en fonction des coord bas
-    //roation(image, (int) atan(  |(coord[5] - coord[7])/(coord[4] - coord[6])|)  ))
-    //problème liée a l'orientation de l'image seront règlé plus tard
+    if(SDL_BlitSurface(image, &spriteSrc, resize_Surface, NULL))
+    {
+        errx(EXIT_FAILURE, "%s", SDL_GetError());
+    }
+    if (IMG_SaveJPG(resize_Surface,  "resize_Surface.jpg", 100) != 0)
+            {
+                errx(EXIT_FAILURE, "%s", SDL_GetError());
+            }
 
     double tmp = coord[5] - coord[7];
     if (tmp == 0)
@@ -476,11 +332,24 @@ int main(int argc, char **argv)
     {
         tmp = - tmp;
     }
-    printf("test\n");
-    printf("%f\n",atan(tmp));
-    //SDL_Surface* rotated_surface = RotateSurface(resize_Surface, atan(tmp) );
+    SDL_Surface* rotated_surface = RotateSurface(resize_Surface, atan(tmp));
+    
+    size_t tmplen = strlen(argv[1]);
+    char* extention = ".result.jpeg";
+    char resultname[tmplen + 11];
+    size_t i = 0;
+    while (i < tmplen)
+    {
+        resultname[i] = argv[1][i];
+        i++;
+    }
+    for (size_t j = 0; j < 12; j++)
+    {
+        resultname[i + j] = argv[1][j];
+    }
 
-    printf("test : end\n");
+    if(IMG_SavePNG(rotated_surface, resultname) != 0)
+        errx(EXIT_FAILURE, "%s", SDL_GetError());
 
     //if(IMG_SavePNG(resize_Surface, "rotate-image2.jpeg") != 0)
         //errx(EXIT_FAILURE, "%s", SDL_GetError());
