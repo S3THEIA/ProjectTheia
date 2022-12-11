@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     Uint8 B[25];
 
 
-    SDL_Surface* res = SDL_CreateRGBSurface(0,w,h,32,0,0,0,0);
+    SDL_Surface* res = SDL_CreateRGBSurface(0,w,h,image_surface->format->BitsPerPixel,0,0,0,0);
     lock = SDL_LockSurface(res);
 
     if(lock != 0)
@@ -73,6 +73,7 @@ int main(int argc, char** argv)
     
     Uint32* pixels_res = res->pixels;
     int tmp;
+    printf("len = %i.\n", len);
     for(unsigned int i = 0; i < len; i++)
     {
         tmp = 0;
@@ -90,6 +91,7 @@ int main(int argc, char** argv)
                     B[tmp] = b;
                     tmp += 1;
                 }
+
             }
             insertionSort(R, 25);
             insertionSort(G, 25);
@@ -103,6 +105,7 @@ int main(int argc, char** argv)
             pixels_res[i] = image[i];
         }   
     }
+    printf("done\n");
 
     int save = IMG_SaveJPG(res, "filtred-picture.jpeg", 100);
     if (save != 0) 
