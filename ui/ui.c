@@ -102,10 +102,10 @@ void click_median(GtkButton* b)
 {
     gtk_widget_set_sensitive(GTK_WIDGET(buttonCancel), TRUE);
     if (strlen(filename1) == 0){
-        sprintf(cmd, "../picture-processing/pre-processing/median-image/"
+        sprintf(cmd, "../picture-processing/pre-processing/median-filter/"
             "medianFilter %s", filename);
     } else {
-        sprintf(cmd, "../picture-processing/pre-processing/median-image/"
+        sprintf(cmd, "../picture-processing/pre-processing/median-filter/"
             "medianFilter %s", filename1);
     }
     system(cmd);
