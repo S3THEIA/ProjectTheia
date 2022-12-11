@@ -1,7 +1,13 @@
-# Actuellement l'application n'est pas utilisable dans son intégralité !
+# Pour utiliser l'application, voici les étapes
 
-Cela est notamment à cause de l'abscence de l'interface graphique qui ne
-facilite pas l'accessibilité côté utilisateur.
+Cloner ce répertoire avec la commande `git clone`.
+Une fois cela fait, allez dans le dossier ProjectTheia avec la commande `cd ProjectTheia`.
+Excécutez la commande `make`.
+Puis pour ouvrir l'interface graphique, utiliser la commande `./ui`.
+
+
+Enfin, pour nettoyer le répertoire, effectuez la commande `make clean` à la racine du projet.
+
 
 ### Architecture du projet
 
