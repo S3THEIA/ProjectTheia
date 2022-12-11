@@ -17,6 +17,6 @@ medianFilter: medianFilter.o
 clean:
 	${RM} ${OBJ}
 	${RM} ${EXE}
-	${RM} filtred-picture.jpeg
+	${RM} median-picture.jpeg
 
 # END

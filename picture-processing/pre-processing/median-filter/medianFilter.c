@@ -98,7 +98,7 @@ int main(int argc, char** argv)
             insertionSort(G, 25);
             insertionSort(B, 25);
 
-            Uint32 pixel2 = SDL_MapRGB(res->format, R[13], G[13], B[13]);
+            Uint32 pixel2 = SDL_MapRGB(res->format, R[4], G[4], B[4]);
             pixels_res[i] = pixel2;
         }
         else
