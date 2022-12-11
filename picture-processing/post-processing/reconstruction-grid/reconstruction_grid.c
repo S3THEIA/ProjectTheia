@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <err.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -24,7 +25,7 @@ void construct_image(char* originfilename, char* solvedfilename,SDL_Surface **or
 {
     FILE* originfichier = fopen(originfilename,"r");
     FILE* solvedfichier = fopen(solvedfilename,"r");
-    printf("hey1\n");
+    printf("heyconstruct1\n");
     if (originfichier != NULL && solvedfichier != NULL)
     {
         printf("hey2\n");
@@ -117,8 +118,30 @@ int main(int argc, char** argv)
         originCase[i] = load_image(originCase_path);
         solvedCase[i] = load_image(solvedCase_path);
     }
-    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,(originCase[0]->w + 5) * LENGTH * LENGTH + 20 + 10,(originCase[0]->h + 5) * LENGTH * LENGTH + 20 + 10,32,0,0,0,0); //creat a black image in function of the width and height of sudokuc
-    construct_image("sudoku", "sudoku.result",originCase,solvedCase,sudokuGrid);
+    
+    size_t tmplen = strlen(argv[1]);
+    char* extention = ".result";
+    char resultname[tmplen + 7];
+    size_t i = 0;
+    printf("hey0\n");
+    while (i < tmplen)
+    {
+        printf("hey1\n");
+        resultname[i] = argv[1][i];
+        i++;
+    }
+    for (size_t j = 0; j < 12; j++)
+    {
+        printf("hey2\n");
+        resultname[i + j] = extention[j];
+    }
+    printf("resultname :%s\n",resultname);
+/*
+    size_t lenfilename = strlen(argv[1]);
+    char resultname[lenfilename+11]= strcat(*resultname, ".png.result");
+*/
+    SDL_Surface* sudokuGrid = SDL_CreateRGBSurface(0,(originCase[0]->w + 5) * LENGTH * LENGTH + 20 + 10,(originCase[0]->h + 5) * LENGTH * LENGTH + 20 + 10,32,0x000000ff,0x0000ff00,0x00ff0000,0); //creat a black image in function of the width and height of sudokuc
+    //construct_image(argv[1], resultname,originCase,solvedCase,sudokuGrid);
     
 
     //if (IMG_SaveJPG(sudokuGrid, "testgrid",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
@@ -143,7 +166,7 @@ int main(int argc, char** argv)
     }
     if (IMG_SaveJPG(sudokuGrid, "resultname.result",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
 */
-    if (IMG_SaveJPG(sudokuGrid, "resultname.result",100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
+    if (IMG_SaveJPG(sudokuGrid, resultname,100) != 0) errx(EXIT_FAILURE, "%s", SDL_GetError());
     // Free the surface.
     //SDL_FreeSurface(sudokuCase);
     SDL_FreeSurface(sudokuGrid);
