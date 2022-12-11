@@ -1,7 +1,8 @@
 # Makefile
 
 CC = gcc
-CFLAGS = -Wall -g -Wextra -O3 `pkg-config --cflags sdl2 SDL2_image` -D__NO_INLINE__
+CFLAGS = -Wall -g -Wextra -O3 `pkg-config --cflags sdl2 SDL2_image` \
+-D__NO_INLINE__
 LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lm
 
 all: medianFilter
