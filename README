@@ -1,11 +1,20 @@
-# Actuellement l'application n'est pas utilisable dans son intégralité !
+# Pour utiliser l'application, voici les étapes :
 
-Cela est notamment à cause de l'abscence de l'interface graphique qui ne
-facilite pas l'accessibilité côté utilisateur.
+- Clonez ce répertoire avec la commande `git clone`.
+- Une fois cela fait, allez dans le dossier ProjectTheia avec la commande :
+`cd ProjectTheia`.
+- Excécutez la commande `make`.
+- Puis pour ouvrir l'interface graphique, utilisez la commande `./ui`.
+
+
+Enfin, pour nettoyer le répertoire, effectuez la commande `make clean`
+à la racine du projet.
+
 
 ### Architecture du projet
 
-Notre projet se divise en plusieurs catégories telle que image, neural-network
-et l'ui. Dans lesquelles en fonction de celle-ci, l'on peut retrouver
+Concernant l'architecture de ce projet, nous l'avons divisé
+en plusieurs catégories telle que image, neural-network et l'ui.
+Dans lesquelles en fonction de celle-ci, l'on peut retrouver
 différentes sous catégorie. De plus, des images de tests sont à disposition
 dans le dossier pictures afin de pouvoir facilement tester les fonctions.
