@@ -17,6 +17,6 @@ split-grid: split-grid.o
 clean:
 	${RM} ${OBJ}
 	${RM} ${EXE}
-	${RM} Sudoku\(*
+	${RM} Sudoku*
 
 # END

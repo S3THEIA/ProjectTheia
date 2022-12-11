@@ -75,7 +75,7 @@ int main(int argc, char** argv)
     spriteSrc.h = toint(argv[5])/(LENGTH*LENGTH);
     spriteSrc.x = toint(argv[2]);
     spriteSrc.y = toint(argv[3]);
-    char casename[] = {'S','u','d','o','k','u','(',' ',',',' ',')',0};
+    char casename[] = "Sudoku00.jpeg";
 
 
     for (int row = 0; row < LENGTH*LENGTH; row++)
@@ -90,8 +90,8 @@ int main(int argc, char** argv)
             {
                 errx(EXIT_FAILURE, "%s", SDL_GetError());
             }
-            casename[7] = '0' + row;
-            casename[9] = '0' +  col;
+            casename[6] = '0' + row;
+            casename[7] = '0' +  col;
 
             if (IMG_SaveJPG(tempSurface,  casename, 100) != 0)
             {
